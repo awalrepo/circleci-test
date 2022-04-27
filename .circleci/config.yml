@@ -1,8 +1,30 @@
 version: 2.1
+orbs:
+  slack: cicleci/slack@4.9.3
 jobs:
-  build:
+  notify:
     docker:
-      - image: cimg/node:17.2.0
+      - image: 'cimg/base:stable'
     steps:
-      - checkout
-      - run: echo "hello world"
+      - slack/notify:
+        custom: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "plain_text",
+                    "text": "*This is a text notification*",
+                    "emoji": true
+                  }
+                ]
+              }
+            ]
+          }
+        event: always
+workflows:
+  send-notification:
+    jobs:
+      - notify:
+        context: slack-secrets
