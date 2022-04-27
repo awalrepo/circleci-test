@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
 jobs:
-  notify:
+  checkout_code_and_run_test:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -15,7 +15,7 @@ jobs:
                   "fields": [
                     {
                       "type": "plain_text",
-                      "text": "*This is a text notification*",
+                      "text": "*Deploy start*",
                       "emoji": true
                     }
                   ]
@@ -23,8 +23,51 @@ jobs:
               ]
             }
           event: always
+      - run: echo 'checkout'
+
+  build_image:
+    steps:
+      - run: echo 'build image'
+  
+  push_image:
+    steps:
+      - run: echo 'push image'
+  
+  migration:
+    steps:
+      - run: echo 'running migration'
+  
+  update_celery:
+    steps:
+      - run: echo 'update celery'
+
+  update_webservers:
+    steps:
+      - run: echo 'update web server'
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "*Deploy finish*",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
+          event: always
+
 workflows:
-  send-notification:
+  build-test-and-deploy:
     jobs:
-      - notify:
+      - checkout_code_and_run_test:
+          context: slack-secrets
+      - migration
+      - update_celery
+      - update_webservers:
           context: slack-secrets
