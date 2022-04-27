@@ -55,22 +55,8 @@ jobs:
     steps:
       - run: echo 'update web server'
       - slack/notify:
-          custom: |
-            {
-              "blocks": [
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "plain_text",
-                      "text": "*Deploy finish*",
-                      "emoji": true
-                    }
-                  ]
-                }
-              ]
-            }
-          event: always
+          event: pass
+          template: success_tagged_deploy_1
 
 workflows:
   build-test-and-deploy:
