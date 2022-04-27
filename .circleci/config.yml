@@ -26,22 +26,32 @@ jobs:
       - run: echo 'checkout'
 
   build_image:
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - run: echo 'build image'
   
   push_image:
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - run: echo 'push image'
   
   migration:
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - run: echo 'running migration'
   
   update_celery:
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - run: echo 'update celery'
 
   update_webservers:
+    docker:
+      - image: 'cimg/base:stable'
     steps:
       - run: echo 'update web server'
       - slack/notify:
