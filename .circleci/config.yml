@@ -67,3 +67,4 @@ workflows:
       - update_celery
       - update_webservers:
           context: slack-secrets
+
