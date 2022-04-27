@@ -64,7 +64,13 @@ workflows:
       - checkout_code_and_run_test:
           context: slack-secrets
       - migration
+          requires:
+            - checkout_code_and_run_test
       - update_celery
+          requires:
+            - migration
       - update_webservers:
+          requires:
+            - update_celery
           context: slack-secrets
 
