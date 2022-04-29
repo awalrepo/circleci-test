@@ -11,15 +11,48 @@ jobs:
             {
               "blocks": [
                 {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Start. :rocket:",
+                    "emoji": true
+                  }
+                },
+                {
                   "type": "section",
                   "fields": [
                     {
-                      "type": "plain_text",
-                      "text": "*Deploy start*",
-                      "emoji": true
+                      "type": "mrkdwn",
+                      "text": "*Job*: ${CIRCLE_JOB}"
                     }
                   ]
-                }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch*: $CIRCLE_BRANCH"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $CIRCLE_SHA1"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
+                },
               ]
             }
           event: always
@@ -30,24 +63,36 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'build image'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
   
   push_image:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'push image'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
   
   migration:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'running migration'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
   
   update_celery:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'update celery'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
 
   update_webservers:
     docker:
@@ -55,8 +100,11 @@ jobs:
     steps:
       - run: echo 'update web server'
       - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
           event: pass
-          template: success_tagged_deploy_1
+          template: basic_success_1
 
 workflows:
   build-test-and-deploy:
@@ -66,9 +114,11 @@ workflows:
       - migration:
           requires:
             - checkout_code_and_run_test
+          context: slack-secrets
       - update_celery:
           requires:
             - migration
+          context: slack-secrets
       - update_webservers:
           requires:
             - update_celery
