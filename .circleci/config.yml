@@ -23,7 +23,15 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Commit*: $(git log --format=oneline -n 1 $CIRCLE_SHA1)"
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch*: $CIRCLE_BRANCH"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $CIRCLE_SHA1"
                     },
                     {
                       "type": "mrkdwn",
