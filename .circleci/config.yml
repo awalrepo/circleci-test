@@ -37,7 +37,12 @@ jobs:
                       "type": "mrkdwn",
                       "text": "*Author*: $CIRCLE_USERNAME"
                     }
-                  ]
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
                 }
               ]
             }
