@@ -1,7 +1,6 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
-  ecm: pay-justice/export-commit-message@0.0.1
 jobs:
   send_notification_job_start:
     docker:
@@ -32,7 +31,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Commit*: $GIT_COMMIT_MESSAGE"
+                      "text": "*Commit*: $CIRCLE_SHA1"
                     },
                     {
                       "type": "mrkdwn",
@@ -208,3 +207,4 @@ workflows:
           requires:
             - update_celery
           context: slack-secrets
+
