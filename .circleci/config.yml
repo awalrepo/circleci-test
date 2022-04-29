@@ -5,8 +5,6 @@ jobs:
   checkout_code_and_run_test:
     docker:
       - image: 'cimg/base:stable'
-        environment:
-          GIT_COMMIT_DESC: $(git log --format=oneline -n 1 $CIRCLE_SHA1)
     steps:
       - slack/notify:
           custom: |
@@ -25,7 +23,7 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Commit*: $GIT_COMMIT_DESC"
+                      "text": "*Commit*: $(git log --format=oneline -n 1 $CIRCLE_SHA1)"
                     },
                     {
                       "type": "mrkdwn",
