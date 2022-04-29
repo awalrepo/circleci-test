@@ -101,7 +101,7 @@ jobs:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Job Finish. :check_mark_button:",
+                    "text": "Job Finish. :white_check_mark:",
                     "emoji": true
                   }
                 },
