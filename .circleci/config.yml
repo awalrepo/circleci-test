@@ -208,4 +208,3 @@ workflows:
           requires:
             - update_celery
           context: slack-secrets
-
