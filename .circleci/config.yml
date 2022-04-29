@@ -111,6 +111,15 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
+                      "text": "*Job*: ${CIRCLE_JOB}"
+                    },
+                  ],
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
                       "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
                     },
                     {
@@ -146,6 +155,15 @@ jobs:
                     "text": "Job Finish. :white_check_mark:",
                     "emoji": true
                   }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Job*: ${CIRCLE_JOB}"
+                    },
+                  ],
                 },
                 {
                   "type": "section",
