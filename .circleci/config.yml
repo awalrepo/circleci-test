@@ -34,7 +34,7 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Commit*: $GIT_COMMIT_MESSAGE"
+                      "text": "*Commit*: ${GIT_COMMIT_MESSAGE}"
                     },
                     {
                       "type": "mrkdwn",
