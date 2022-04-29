@@ -22,11 +22,12 @@ jobs:
                   "type": "section",
                   "fields": [
                     {
-                      "type": "mrkdwn",
-                      "text": "*Job*: ${CIRCLE_JOB}"
+                      "type": "plain_text",
+                      "text": "*Deploy start*",
+                      "emoji": true
                     }
                   ]
-                },
+                }
               ]
             }
           event: always
