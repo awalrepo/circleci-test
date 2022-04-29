@@ -111,15 +111,6 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Job*: ${CIRCLE_JOB}"
-                    },
-                  ],
-                },
-                {
-                  "type": "section",
-                  "fields": [
-                    {
-                      "type": "mrkdwn",
                       "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
                     },
                     {
@@ -162,8 +153,8 @@ jobs:
                     {
                       "type": "mrkdwn",
                       "text": "*Job*: ${CIRCLE_JOB}"
-                    },
-                  ],
+                    }
+                  ]
                 },
                 {
                   "type": "section",
