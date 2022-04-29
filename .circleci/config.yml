@@ -22,8 +22,8 @@ jobs:
                   "type": "section",
                   "fields": [
                     {
-                      "type": "plain_text",
-                      "text": "*Deploy start*"
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
                     }
                   ]
                 }
