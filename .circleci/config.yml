@@ -98,6 +98,10 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'update web server'
+      - checkout
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - slack/notify:
           custom: |
             {
