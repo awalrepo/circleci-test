@@ -114,7 +114,7 @@ commands:
                       "url": "${CIRCLE_BUILD_URL}"
                     }
                   ]
-                },
+                }
               ]
             }
           event: always
