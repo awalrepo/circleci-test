@@ -25,7 +25,7 @@ commands:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Branch*: $CIRCLE_BRANCH"
+                      "text": "*When*: $(date +'%m/%d/%Y %T')"
                     },
                     {
                       "type": "mrkdwn",
