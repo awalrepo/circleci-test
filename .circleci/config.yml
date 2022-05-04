@@ -164,7 +164,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - fbz_notifiy_start
+      - fbz_notify_start
       - run: echo 'build image'
       - fbz_notify_failed
   
@@ -195,7 +195,7 @@ jobs:
     steps:
       - run: echo 'update web server'
       - fbz_notify_failed
-      - fbz_notifiy_finish
+      - fbz_notify_finish
 
 workflows:
   build-test-and-deploy:
