@@ -159,13 +159,13 @@ jobs:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'checkout'
+      - fbz_notify_start
 
   build_image:
     docker:
       - image: 'cimg/base:stable'
     steps:
       - run: echo 'build image'
-      - fbz_notify_start
       - fbz_notify_failed
   
   push_image:
@@ -201,6 +201,7 @@ workflows:
   build-test-and-deploy:
     jobs:
       - checkout_code_and_run_test
+          context: slack-secrets
       - migration:
           requires:
             - checkout_code_and_run_test
