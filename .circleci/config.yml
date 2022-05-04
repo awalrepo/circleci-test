@@ -1,15 +1,9 @@
 version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
-jobs:
-  send_notification_job_start:
-    docker:
-      - image: 'cimg/base:stable'
+commands:
+  fbz_notifiy_start:
     steps:
-      - checkout
-      - run:
-          name: "Setup custom environment variables"
-          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - slack/notify:
           custom: |
             {
@@ -31,11 +25,11 @@ jobs:
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*When*: $(date +'%m/%d/%Y %T')"
+                      "text": "*Branch*: $CIRCLE_BRANCH"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Commit*: ${GIT_COMMIT_MESSAGE}"
+                      "text": "*Commit*: $CIRCLE_SHA1"
                     },
                     {
                       "type": "mrkdwn",
@@ -51,6 +45,16 @@ jobs:
               ]
             }
           event: always
+jobs:
+  send_notification_job_start:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
+      - fbz_notifiy_start
   checkout_code_and_run_test:
     docker:
       - image: 'cimg/base:stable'
