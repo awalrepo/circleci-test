@@ -12,7 +12,7 @@ commands:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Job Start. :racing_flag:",
+                    "text": "Job Start. :arrow_right:",
                     "emoji": true
                   }
                 },
