@@ -4,6 +4,10 @@ orbs:
 commands:
   fbz_notifiy_start:
     steps:
+      - checkout
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - slack/notify:
           custom: |
             {
@@ -50,10 +54,6 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - checkout
-      - run:
-          name: "Setup custom environment variables"
-          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - fbz_notifiy_start
   checkout_code_and_run_test:
     docker:
