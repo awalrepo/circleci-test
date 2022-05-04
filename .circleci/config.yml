@@ -12,7 +12,7 @@ commands:
                   "type": "header",
                   "text": {
                     "type": "plain_text",
-                    "text": "Job Start. :rocket:",
+                    "text": "Job Start.",
                     "emoji": true
                   }
                 },
@@ -164,8 +164,8 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - fbz_notify_start
       - run: echo 'build image'
+      - fbz_notify_start
       - fbz_notify_failed
   
   push_image:
