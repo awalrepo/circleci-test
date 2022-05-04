@@ -200,8 +200,7 @@ jobs:
 workflows:
   build-test-and-deploy:
     jobs:
-      - checkout_code_and_run_test
-          requires
+      - checkout_code_and_run_test:
           context: slack-secrets
       - migration:
           requires:
