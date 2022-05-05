@@ -4,7 +4,8 @@ orbs:
 commands:
   fbz_notify_start:
     steps:
-      - run: cat ~/.circleci/slack_template_start.json
+      - run: pwd
+      - run: cat ./.circleci/slack_template_start.json
       - run: echo 'export FBZ_TEMPLATE_START=$(cat ~/.circleci/slack_template_start.json)' >> $BASH_ENV
       - slack/notify:
           event: always
