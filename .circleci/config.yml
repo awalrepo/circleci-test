@@ -6,7 +6,6 @@ commands:
     steps:
       - checkout
       - run: echo 'export FBZ_TEMPLATE_START=$(jq .start ./.circleci/slack_templates.json)' >> $BASH_ENV
-      - run: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - slack/notify:
           event: always
           template: FBZ_TEMPLATE_START
@@ -14,7 +13,6 @@ commands:
     steps:
       - checkout
       - run: echo 'export FBZ_TEMPLATE_FAIL=$(jq .fail ./.circleci/slack_templates.json)' >> $BASH_ENV
-      - run: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - slack/notify:
           event: fail
           template: FBZ_TEMPLATE_FAIL
@@ -22,7 +20,6 @@ commands:
     steps:
       - checkout
       - run: echo 'export FBZ_TEMPLATE_PASS=$(jq .pass ./.circleci/slack_templates.json)' >> $BASH_ENV
-      - run: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
       - slack/notify:
           event: pass
           template: FBZ_TEMPLATE_PASS
