@@ -22,7 +22,7 @@
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*Commit*: $CIRCLE_SHA1"
+                        "text": "*Commit*: $GIT_COMMIT_MESSAGE"
                     },
                     {
                         "type": "mrkdwn",
@@ -69,7 +69,7 @@
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*Commit*: $CIRCLE_SHA1"
+                        "text": "*Commit*: $GIT_COMMIT_MESSAGE"
                     },
                     {
                         "type": "mrkdwn",
@@ -120,7 +120,7 @@
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*Commit*: $CIRCLE_SHA1"
+                        "text": "*Commit*: $GIT_COMMIT_MESSAGE"
                     },
                     {
                         "type": "mrkdwn",
