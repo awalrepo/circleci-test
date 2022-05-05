@@ -147,8 +147,8 @@ jobs:
       - checkout
       - run: 
           command: |
-            echo 'export FBZ_TEMPLATE_START=$(jq .pass ./.circleci/slack_template_start.json)' >> $BASH_ENV
-      - run: echo $FBZ_TEMPLATE_START
+            echo 'export FBZ_TEMPLATE_START=$(jq .start ./.circleci/slack_template_start.json)' >> $BASH_ENV
+      - run: echo $BASH_ENV
       - slack/notify:
           event: always
           template: FBZ_TEMPLATE_START
