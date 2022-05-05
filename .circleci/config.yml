@@ -5,8 +5,9 @@ commands:
   fbz_notify_start:
     steps:
       - checkout
-      - run: ls ~/.circleci/
-      - run: echo 'export FBZ_TEMPLATE_START=$(cat /.circleci/slack_template_start.json)' >> $BASH_ENV
+      - run: 
+          command: |
+            echo 'export FBZ_TEMPLATE_START=$(jq .pass ./.circleci/slack_template_start.json)' >> $BASH_ENV
       - slack/notify:
           event: always
           template: FBZ_TEMPLATE_START
