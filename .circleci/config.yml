@@ -144,7 +144,14 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - fbz_notify_start
+      - checkout
+      - run: 
+          command: |
+            echo 'export FBZ_TEMPLATE_START=$(jq .pass ./.circleci/slack_template_start.json)' >> $BASH_ENV
+      - run: echo FBZ_TEMPLATE_START
+      - slack/notify:
+          event: always
+          template: FBZ_TEMPLATE_START
       - run: echo 'running migration'
       - fbz_notify_failed
   
