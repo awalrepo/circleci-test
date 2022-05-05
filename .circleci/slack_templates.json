@@ -27,6 +27,10 @@
                     {
                         "type": "mrkdwn",
                         "text": "*Author*: $CIRCLE_USERNAME"
+                    },
+                    {
+                        "type": "mrkdwn",
+                        "text": "*PR from*: $GIT_COMMIT_MESSAGE\\ $CIRCLE_SHA1"
                     }
                 ],
                 "accessory": {
