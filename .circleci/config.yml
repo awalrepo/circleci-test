@@ -35,7 +35,6 @@ jobs:
 
   build_image:
     docker:
-      - image: 801133666598.dkr.ecr.us-east-1.amazonaws.com/financebuzz:latest
       - image: cimg/base:stable
     steps:
       - run: echo 'build image'
@@ -43,7 +42,6 @@ jobs:
   
   push_image:
     docker:
-      - image: 801133666598.dkr.ecr.us-east-1.amazonaws.com/financebuzz:latest
       - image: cimg/base:stable
     steps:
       - run: echo 'push image'
@@ -51,7 +49,6 @@ jobs:
   
   migration:
     docker:
-      - image: 801133666598.dkr.ecr.us-east-1.amazonaws.com/financebuzz:latest
       - image: cimg/base:stable
     steps:
       - fbz_notify_start
@@ -60,7 +57,6 @@ jobs:
   
   update_celery:
     docker:
-      - image: 801133666598.dkr.ecr.us-east-1.amazonaws.com/financebuzz:latest
       - image: cimg/base:stable
     steps:
       - run: echo 'update celery'
@@ -68,7 +64,6 @@ jobs:
 
   update_webservers:
     docker:
-      - image: 801133666598.dkr.ecr.us-east-1.amazonaws.com/financebuzz:latest
       - image: cimg/base:stable
     steps:
       - run: echo 'update web server'
