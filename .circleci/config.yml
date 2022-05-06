@@ -38,29 +38,29 @@ jobs:
       - image: cimg/base:stable
     steps:
       - run: echo 'build image'
-      # - fbz_notify_failed
+      - fbz_notify_failed
   
   push_image:
     docker:
       - image: cimg/base:stable
     steps:
       - run: echo 'push image'
-      # - fbz_notify_failed
+      - fbz_notify_failed
   
   migration:
     docker:
       - image: cimg/base:stable
     steps:
-      # - fbz_notify_start
+      - fbz_notify_start
       - run: echo 'running migration'
-      # - fbz_notify_failed
+      - fbz_notify_failed
   
   update_celery:
     docker:
       - image: cimg/base:stable
     steps:
       - run: echo 'update celery'
-      # - fbz_notify_failed
+      - fbz_notify_failed
 
   update_webservers:
     docker:
@@ -70,8 +70,8 @@ jobs:
           - POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - run: echo 'update web server'
-      # - fbz_notify_failed
-      # - fbz_notify_finish
+      - fbz_notify_failed
+      - fbz_notify_finish
 
 workflows:
   build-test-and-deploy:
