@@ -29,39 +29,39 @@ commands:
 jobs:
   checkout_code_and_run_test:
     docker:
+      - image: cimg/base:stable
       - image: circleci/postgres:9.6-buster-ram
         environment:
           - POSTGRES_HOST_AUTH_METHOD: trust
-      - image: cimg/base:stable
     steps:
       - run: echo 'checkout'
 
   build_image:
     docker:
+      - image: cimg/base:stable
       - image: circleci/postgres:9.6-buster-ram
         environment:
           - POSTGRES_HOST_AUTH_METHOD: trust
-      - image: cimg/base:stable
     steps:
       - run: echo 'build image'
       - fbz_notify_failed
   
   push_image:
     docker:
+      - image: cimg/base:stable
       - image: circleci/postgres:9.6-buster-ram
         environment:
           - POSTGRES_HOST_AUTH_METHOD: trust
-      - image: cimg/base:stable
     steps:
       - run: echo 'push image'
       - fbz_notify_failed
   
   migration:
     docker:
+      - image: cimg/base:stable
       - image: circleci/postgres:9.6-buster-ram
         environment:
           - POSTGRES_HOST_AUTH_METHOD: trust
-      - image: cimg/base:stable
     steps:
       - fbz_notify_start
       - run: echo 'running migration'
@@ -69,20 +69,20 @@ jobs:
   
   update_celery:
     docker:
+      - image: cimg/base:stable
       - image: circleci/postgres:9.6-buster-ram
         environment:
           - POSTGRES_HOST_AUTH_METHOD: trust
-      - image: cimg/base:stable
     steps:
       - run: echo 'update celery'
       - fbz_notify_failed
 
   update_webservers:
     docker:
+      - image: cimg/base:stable
       - image: circleci/postgres:9.6-buster-ram
         environment:
           - POSTGRES_HOST_AUTH_METHOD: trust
-      - image: cimg/base:stable
     steps:
       - run: echo 'update web server'
       - fbz_notify_failed
