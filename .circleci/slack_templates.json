@@ -18,7 +18,7 @@
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*When*: $(date +'%m/%d/%Y %T')"
+                        "text": "*When*: $(TZ='America/New_York' date +'%m/%d/%Y %T')"
                     },
                     {
                         "type": "mrkdwn",
@@ -116,7 +116,7 @@
                     },
                     {
                         "type": "mrkdwn",
-                        "text": "*When*: $(date +'%m/%d/%Y %T')"
+                        "text": "*When*: $(TZ='America/New_York' date +'%m/%d/%Y %T')"
                     },
                     {
                         "type": "mrkdwn",
