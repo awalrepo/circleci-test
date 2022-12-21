@@ -1,0 +1,218 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@4.9.3
+jobs:
+  send_notification_job_start:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - checkout
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Start. :rocket:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When*: $(date +'%m/%d/%Y %T')"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: ${GIT_COMMIT_MESSAGE}"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
+                }
+              ]
+            }
+          event: always
+  checkout_code_and_run_test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'checkout'
+
+  build_image:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'build image'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  
+  push_image:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'push image'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  
+  migration:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'running migration'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  
+  update_celery:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'update celery'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+  update_webservers:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'update web server'
+      - checkout
+      - run:
+          name: "Setup custom environment variables"
+          command: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Failed. :red_circle:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Job*: ${CIRCLE_JOB}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When*: $(date +'%m/%d/%Y %T')"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $GIT_COMMIT_MESSAGE"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
+                }
+              ]
+            }
+          event: fail
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Finish. :white_check_mark:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When*: $(date +'%m/%d/%Y %T')"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $GIT_COMMIT_MESSAGE"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
+                }
+              ]
+            }
+          event: pass
+
+workflows:
+  build-test-and-deploy:
+    jobs:
+      - send_notification_job_start:
+          context: slack-secrets
+      - checkout_code_and_run_test:
+          requires:
+            - send_notification_job_start
+          context: slack-secrets
+      - migration:
+          requires:
+            - checkout_code_and_run_test
+          context: slack-secrets
+      - update_celery:
+          requires:
+            - migration
+          context: slack-secrets
+      - update_webservers:
+          requires:
+            - update_celery
+          context: slack-secrets
+

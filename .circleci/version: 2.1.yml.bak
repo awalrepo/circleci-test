@@ -1,0 +1,155 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@4.9.3
+jobs:
+  checkout_code_and_run_test:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Start. :rocket:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branch*: $CIRCLE_BRANCH"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $CIRCLE_SHA1"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
+                }
+              ]
+            }
+          event: always
+      - run: echo 'checkout'
+
+  build_image:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'build image'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  
+  push_image:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'push image'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  
+  migration:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'running migration'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+  
+  update_celery:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'update celery'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+  update_webservers:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: echo 'update web server'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Job Finish. :check_mark_button:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Project*: $CIRCLE_PROJECT_REPONAME"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*When*: $(date +'%m/%d/%Y %T')"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Commit*: $CIRCLE_SHA1"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Author*: $CIRCLE_USERNAME"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "image",
+                    "image_url": "https://cdn.financebuzz.com/assets/2017/08/28/favicon.png",
+                    "alt_text": "Financebuzz"
+                  }
+                }
+              ]
+            }
+          event: pass
+
+workflows:
+  build-test-and-deploy:
+    jobs:
+      - checkout_code_and_run_test:
+          context: slack-secrets
+      - migration:
+          requires:
+            - checkout_code_and_run_test
+          context: slack-secrets
+      - update_celery:
+          requires:
+            - migration
+          context: slack-secrets
+      - update_webservers:
+          requires:
+            - update_celery
+          context: slack-secrets
+
