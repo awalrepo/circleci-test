@@ -50,10 +50,9 @@ jobs:
       - run: |
           cat bash.env > $BASH_ENV
       - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
-      - run: echo $SLACK_MESSAGE_TS
-      # - run:
-      #     name: Send Slack Notif Unit
-      #     command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
+      - run:
+          name: Send Slack Notif Unit
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
 
 workflows:
   build-test-and-deploy:
