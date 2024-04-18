@@ -43,13 +43,12 @@ async function updateSlackMessage ({blocks, slackBotToken, slackChannelId, ts}) 
 async function main() {
     try {
         if (process.env.SLACK_MESSAGE_TS) {
-            console.log(`masuk sini: ${process.env.SLACK_MESSAGE_TS}`, process.env.FBZ_TEMPLATE_START);
-            // await updateSlackMessage({
-            //     slackBotToken: process.env.SLACK_ACCESS_TOKEN,
-            //     slackChannelId: 'C06V5CYCK32',
-            //     blocks: process.env.FBZ_TEMPLATE_START,
-            //     ts: process.env.SLACK_MESSAGE_TS
-            // });
+            await updateSlackMessage({
+                slackBotToken: process.env.SLACK_ACCESS_TOKEN,
+                slackChannelId: 'C06V5CYCK32',
+                blocks: process.env.FBZ_TEMPLATE_START,
+                ts: process.env.SLACK_MESSAGE_TS
+            });
         } else {
             const response = await sendSlackMessage({
                 slackBotToken: process.env.SLACK_ACCESS_TOKEN,
