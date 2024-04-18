@@ -60,6 +60,42 @@ jobs:
           name: Send Slack Notif Unit
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
       - fbz_save_bash_env
+  fbz_notify_prod_deployment:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - run: npm install
+      - fbz_load_bash_env
+      - run: echo 'export FBZ_ICON_PROD=:white_check_mark:' >> $BASH_ENV
+      - run:
+          name: Send Slack Notif Unit
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
+      - fbz_save_bash_env
+  fbz_notify_smoke_deployment:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - run: npm install
+      - fbz_load_bash_env
+      - run: echo 'export FBZ_ICON_SMOKE=:white_check_mark:' >> $BASH_ENV
+      - run:
+          name: Send Slack Notif Smoke
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
+      - fbz_save_bash_env
+  fbz_notify_visual_deployment:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - run: npm install
+      - fbz_load_bash_env
+      - run: echo 'export FBZ_ICON_VISUAL=:white_check_mark:' >> $BASH_ENV
+      - run:
+          name: Send Slack Notif Smoke
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
+      - fbz_save_bash_env
 
 workflows:
   build-test-and-deploy:
@@ -69,6 +105,18 @@ workflows:
       - fbz_notify_unit_deployment:
           requires:
             - fbz_notify_start_deployment
+          context: slack-secrets
+      - fbz_notify_prod_deployment:
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
+      - fbz_notify_smoke_deployment:
+          requires:
+            - fbz_notify_prod_deployment
+          context: slack-secrets
+      - fbz_notify_visual_deployment:
+          requires:
+            - fbz_notify_smoke_deployment
           context: slack-secrets
       
 
