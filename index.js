@@ -1,6 +1,6 @@
 import { WebClient } from '@slack/web-api';
 
-async function sendSlackMessage (blocks, slackBotToken, slackChannelId) {
+async function sendSlackMessage ({blocks, slackBotToken, slackChannelId}) {
     if (!slackBotToken) {
         console.error('Failed to post on Slack Channel: slackBotToken not provided');
         return;
