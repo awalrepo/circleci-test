@@ -22,12 +22,12 @@ async function sendSlackMessage (blocks, slackBotToken, slackChannelId) {
 
 async function main() {
     try {
-        // const response = await sendSlackMessage({
-        //     slackBotToken: process.env.SLACK_ACCESS_TOKEN,
-        //     slackChannelId: 'C06V5CYCK32',
-        //     message: process.env.FBZ_TEMPLATE_START,
-        // });
-        console.log('export SLACK_MESSAGE_TS=yellow')
+        const response = await sendSlackMessage({
+            slackBotToken: process.env.SLACK_ACCESS_TOKEN,
+            slackChannelId: 'C06V5CYCK32',
+            message: process.env.FBZ_TEMPLATE_START,
+        });
+        console.log(`export SLACK_MESSAGE_TS=${response.ts}`)
     } catch (error) {
         console.error('Error running smoke tests:', error);
     }
