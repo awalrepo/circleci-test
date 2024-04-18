@@ -31,7 +31,7 @@ jobs:
       - run: npm install
       - run:
           name: Send Slack Notif
-          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R) npm run test:ci --silent > $BASH_ENV 
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci --silent > $BASH_ENV 
 
 workflows:
   build-test-and-deploy:
