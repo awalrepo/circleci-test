@@ -28,6 +28,7 @@ jobs:
       - image: cimg/node:lts
     steps:
       - fbz_notify_start
+      - run: npm install
       - run: npm run test:ci --silent 
 
 workflows:
