@@ -4,12 +4,8 @@ orbs:
 commands:
   fbz_notify_start:
     steps:
-      - checkout
-      - run: echo 'export FBZ_TEMPLATE_START=$(jq .start ./.circleci/slack_templates.json)' >> $BASH_ENV
-      - run: echo 'export GIT_COMMIT_MESSAGE="$(git log --format=%B -n 1 $CIRCLE_SHA1)"' >> $BASH_ENV
-      - slack/notify:
-          event: always
-          template: FBZ_TEMPLATE_START
+    - checkout
+    - run: echo 'export FBZ_TEMPLATE_START=$(jq .fbz_start ./.circleci/slack_templates.json)' >> $BASH_ENV
   fbz_notify_failed:
     steps:
       - checkout
@@ -27,66 +23,20 @@ commands:
           event: pass
           template: FBZ_TEMPLATE_PASS
 jobs:
-  checkout_code_and_run_test:
+  fbz_notify_deployment:
     docker:
-      - image: cimg/base:stable
-    steps:
-      - run: echo 'checkout-1'
-
-  build_image:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run: echo 'build image'
-      - fbz_notify_failed
-  
-  push_image:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run: echo 'push image'
-      - fbz_notify_failed
-  
-  migration:
-    docker:
-      - image: cimg/base:stable
+      - image: cimg/node:lts
     steps:
       - fbz_notify_start
-      - run: echo 'running migration'
+      - run: 
+          name: "Start Deployment"
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN >> npm run circleci || true
       - fbz_notify_failed
-  
-  update_celery:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run: echo 'update celery'
-      - fbz_notify_failed
-
-  update_webservers:
-    docker:
-      - image: cimg/base:stable
-      - image: circleci/postgres:9.6-buster-ram
-        environment:
-          - POSTGRES_HOST_AUTH_METHOD: trust
-    steps:
-      - run: echo 'update web server'
-      - fbz_notify_failed
-      - fbz_notify_finish
 
 workflows:
   build-test-and-deploy:
     jobs:
-      - checkout_code_and_run_test
-      - migration:
-          requires:
-            - checkout_code_and_run_test
+      - fbz_notify_deployment:
           context: slack-secrets
-      - update_celery:
-          requires:
-            - migration
-          context: slack-secrets
-      - update_webservers:
-          requires:
-            - update_celery
-          context: slack-secrets
+      
 

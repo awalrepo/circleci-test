@@ -134,5 +134,125 @@
                 }
             }
         ]
+    },
+    "fbz_start": {
+        "blocks": [
+            {
+                "type": "rich_text",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "emoji",
+                                "name": "rocket"
+                            },
+                            {
+                                "type": "text",
+                                "text": " Pipline Update for Branch:",
+                                "style": {
+                                    "bold": true
+                                }
+                            },
+                            {
+                                "type": "text",
+                                "text": " $CIRCLE_BRANCH"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "Started by: $CIRCLE_USERNAME",
+                        "emoji": true
+                    }
+                ]
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "When: $(TZ='America/New_York' date +'%m/%d/%Y %T')",
+                        "emoji": true
+                    }
+                ]
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":white_check_mark: Pipeline started",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":white_square_button: Unit / Integration tests passed",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":white_check_mark: Changes deployed to production",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":white_square_button: Smoke test finished",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": ":white_square_button: Visual regression test finished",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "View Job",
+                            "emoji": true
+                        },
+                        "value": "click_me_123",
+                        "action_id": "actionId-0"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "View Site",
+                            "emoji": true
+                        },
+                        "value": "click_me_123",
+                        "action_id": "actionId-1"
+                    }
+                ]
+            }
+        ]
     }
 }
