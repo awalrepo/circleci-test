@@ -27,7 +27,8 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
-      - run: echo 'running fbz_notify_deployment'
+      - fbz_notify_start
+      - run: echo $FBZ_TEMPLATE_START
 
 workflows:
   build-test-and-deploy:
