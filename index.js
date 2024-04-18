@@ -28,7 +28,6 @@ async function main() {
         //     blocks: process.env.FBZ_TEMPLATE_START,
         // });
         console.log(process.env.SLACK_ACCESS_TOKEN)
-        console.log(process.env.FBZ_TEMPLATE_START)
     } catch (error) {
         console.error('Error running smoke tests:', error);
     }
