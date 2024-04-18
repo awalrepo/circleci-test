@@ -27,11 +27,7 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
-      - fbz_notify_start
-      - run: 
-          name: "Start Deployment"
-          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN >> npm run circleci || true
-      - fbz_notify_failed
+      - run: echo 'running fbz_notify_deployment'
 
 workflows:
   build-test-and-deploy:
