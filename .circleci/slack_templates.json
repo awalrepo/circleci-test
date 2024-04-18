@@ -197,7 +197,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": ":white_square_button: Unit / Integration tests passed",
+                    "text": "${FBZ_ICON_UNIT:=':white_square_button:'} Unit / Integration tests passed",
                     "emoji": true
                 }
             },
