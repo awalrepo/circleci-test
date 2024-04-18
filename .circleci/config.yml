@@ -22,19 +22,6 @@ commands:
       - slack/notify:
           event: pass
           template: FBZ_TEMPLATE_PASS
-  save_bash_env:
-    - run: |
-        cp $BASH_ENV bash.env
-    - persist_to_workspace:
-        root: .
-        paths: 
-          - bash.env
-  load_bash_env:
-    - attach_workspace:
-        at: .
-    - run: |
-        cat bash.env > $BASH_ENV
-
 jobs:
   fbz_notify_start_deployment:
     docker:
@@ -46,19 +33,32 @@ jobs:
       - run:
           name: Send Slack Notif Start
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci --silent >> $BASH_ENV 
-      - save_bash_env
+      - run: |
+          cp $BASH_ENV bash.env
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - bash.env
   fbz_notify_unit_deployment:
     docker:
       - image: cimg/node:lts
     steps:
       - checkout
       - run: npm install
-      - load_bash_env
+      - attach_workspace:
+          at: .
+      - run: |
+          cat bash.env > $BASH_ENV
       - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
       - run:
           name: Send Slack Notif Unit
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
-      - save_bash_env
+      - run: |
+          cp $BASH_ENV bash.env
+      - persist_to_workspace:
+          root: .
+          paths: 
+            - bash.env
 
 workflows:
   build-test-and-deploy:
