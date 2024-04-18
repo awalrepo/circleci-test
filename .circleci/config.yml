@@ -29,7 +29,8 @@ jobs:
     steps:
       - fbz_notify_start
       - run: npm install
-      - run: npm run test:ci --silent 
+      - run: npm run test:ci --silent > $BASH_ENV
+      - run: echo $SLACK_MESSAGE_TS
 
 workflows:
   build-test-and-deploy:
