@@ -205,7 +205,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": ":white_square_button: Changes deployed to production",
+                    "text": "${FBZ_ICON_PROD:=:white_square_button:} Changes deployed to production",
                     "emoji": true
                 }
             },
@@ -213,7 +213,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": ":white_square_button: Smoke test finished",
+                    "text": "${FBZ_ICON_SMOKE:=:white_square_button:} Smoke test finished",
                     "emoji": true
                 }
             },
@@ -221,7 +221,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": ":white_square_button: Visual regression test finished",
+                    "text": "${FBZ_ICON_VISUAL:=:white_square_button:} Visual regression test finished",
                     "emoji": true
                 }
             },
