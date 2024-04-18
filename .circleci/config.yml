@@ -34,26 +34,26 @@ jobs:
       - run:
           name: Send Slack Notif
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$FBZ_TEMPLATE_START npm run test:ci --silent > $BASH_ENV 
-  fbz_notify_unit_deployment:
-    docker:
-      - image: cimg/node:lts
-    steps:
-      - checkout
-      - run: npm install
-      - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
-      - run: echo 'export FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) >> $BASH_ENV'
-      - run:
-          name: Send Slack Notif
-          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$FBZ_TEMPLATE_START npm run test:ci 
+  # fbz_notify_unit_deployment:
+  #   docker:
+  #     - image: cimg/node:lts
+  #   steps:
+  #     - checkout
+  #     - run: npm install
+  #     - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
+  #     - run: echo 'export FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) >> $BASH_ENV'
+  #     - run:
+  #         name: Send Slack Notif
+  #         command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$FBZ_TEMPLATE_START npm run test:ci 
 
 workflows:
   build-test-and-deploy:
     jobs:
       - fbz_notify_start_deployment:
           context: slack-secrets
-      - fbz_notify_unit_deployment:
-          requires:
-            - fbz_notify_start_deployment
-          context: slack-secrets
+      # - fbz_notify_unit_deployment:
+      #     requires:
+      #       - fbz_notify_start_deployment
+      #     context: slack-secrets
       
 
