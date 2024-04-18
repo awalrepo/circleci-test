@@ -29,8 +29,8 @@ jobs:
     steps:
       - fbz_notify_start
       - run: npm install
-      - run: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$FBZ_TEMPLATE_START npm run test:ci --silent > $BASH_ENV
-      - run: echo $SLACK_MESSAGE_TS
+      # - run: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$FBZ_TEMPLATE_START npm run test:ci --silent > $BASH_ENV
+      - run: echo $SLACK_ACCESS_TOKEN
 
 workflows:
   build-test-and-deploy:
