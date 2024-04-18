@@ -189,7 +189,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": ":white_check_mark: Pipeline started",
+                    "text": "${FBZ_ICON_START:=':white_square_button:'} Pipeline started",
                     "emoji": true
                 }
             },
