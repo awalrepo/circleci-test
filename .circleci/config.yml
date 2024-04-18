@@ -32,7 +32,7 @@ jobs:
       # - run:
       #     name: Send Slack Notif
       #     command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$(echo "$FBZ_TEMPLATE_START" | jq --arg CIRCLE_BRANCH "$CIRCLE_BRANCH") npm run test:ci --silent > $BASH_ENV 
-      - run: echo $(echo "$FBZ_TEMPLATE_START" | jq --arg CIRCLE_BRANCH $CIRCLE_BRANCH)
+      - run: eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)
 
 workflows:
   build-test-and-deploy:
