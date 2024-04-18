@@ -50,9 +50,9 @@ workflows:
     jobs:
       - fbz_notify_start_deployment:
           context: slack-secrets
-      # - fbz_notify_unit_deployment:
-      #     requires:
-      #       - fbz_notify_start_deployment
-      #     context: slack-secrets
+      - fbz_notify_unit_deployment:
+          requires:
+            - fbz_notify_start_deployment
+          context: slack-secrets
       
 
