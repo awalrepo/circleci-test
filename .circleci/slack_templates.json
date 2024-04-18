@@ -205,7 +205,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": ":white_check_mark: Changes deployed to production",
+                    "text": ":white_square_button: Changes deployed to production",
                     "emoji": true
                 }
             },
