@@ -46,7 +46,10 @@ jobs:
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
       - run:
           name: Send Slack Notif Start
-          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci --silent >> $BASH_ENV 
+          command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci --silent 
+      # - run:
+      #     name: Send Slack Notif Start
+      #     command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci --silent >> $BASH_ENV 
       - fbz_save_bash_env
   fbz_notify_unit_deployment:
     docker:

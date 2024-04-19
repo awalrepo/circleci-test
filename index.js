@@ -42,7 +42,8 @@ async function updateSlackMessage ({blocks, slackBotToken, slackChannelId, ts}) 
 
 async function main() {
     try {
-        console.log(process.env.FBZ_TEMPLATE_START)
+        const blocks = process.env.FBZ_TEMPLATE_START
+        console.log(blocks)
         // if (process.env.SLACK_MESSAGE_TS) {
         //     await updateSlackMessage({
         //         slackBotToken: process.env.SLACK_ACCESS_TOKEN,
