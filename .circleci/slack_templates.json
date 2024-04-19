@@ -235,11 +235,9 @@
                         "type": "button",
                         "text": {
                             "type": "plain_text",
-                            "text": "View Job",
-                            "emoji": true
+                            "text": "View Job"
                         },
-                        "value": "click_me_123",
-                        "action_id": "actionId-0"
+                        "url": "${CIRCLE_BUILD_URL}"
                     },
                     {
                         "type": "button",
@@ -248,8 +246,7 @@
                             "text": "View Site",
                             "emoji": true
                         },
-                        "value": "click_me_123",
-                        "action_id": "actionId-1"
+                        "url": "https://financebuzz.com"
                     }
                 ]
             }
