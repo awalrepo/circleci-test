@@ -149,7 +149,7 @@
                             },
                             {
                                 "type": "text",
-                                "text": " Pipline Update for Branch:",
+                                "text": " Pipeline Update for Branch:",
                                 "style": {
                                     "bold": true
                                 }
