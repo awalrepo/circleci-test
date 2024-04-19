@@ -1,4 +1,4 @@
-import { WebClient, Block } from '@slack/web-api';
+import { WebClient } from '@slack/web-api';
 
 async function sendSlackMessage ({blocks, slackBotToken, slackChannelId}) {
     if (!slackBotToken) {
