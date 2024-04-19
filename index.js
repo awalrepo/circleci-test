@@ -42,18 +42,19 @@ async function updateSlackMessage ({blocks, slackBotToken, slackChannelId, ts}) 
 
 async function main() {
     try {
+        const blocks = process.env.FBZ_TEMPLATE_START
         if (process.env.SLACK_MESSAGE_TS) {
             await updateSlackMessage({
                 slackBotToken: process.env.SLACK_ACCESS_TOKEN,
                 slackChannelId: 'C06V5CYCK32',
-                blocks: process.env.FBZ_TEMPLATE_START,
-                ts: process.env.SLACK_MESSAGE_TS
+                ts: process.env.SLACK_MESSAGE_TS,
+                blocks
             });
         } else {
             const response = await sendSlackMessage({
                 slackBotToken: process.env.SLACK_ACCESS_TOKEN,
                 slackChannelId: 'C06V5CYCK32',
-                blocks: process.env.FBZ_TEMPLATE_START,
+                blocks
             });
             console.log(`export SLACK_MESSAGE_TS=${response.ts}`)
         }
