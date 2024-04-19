@@ -5,7 +5,7 @@ commands:
   fbz_notify_start:
     steps:
     - checkout
-    - run: echo 'export FBZ_TEMPLATE_START=$(jq .fbz_start ./.circleci/slack_templates.json)' >> $BASH_ENV
+    - run: echo 'export FBZ_TEMPLATE_START=$(jq .fbz_start.blocks ./.circleci/slack_templates.json)' >> $BASH_ENV
   fbz_notify_failed:
     steps:
       - checkout

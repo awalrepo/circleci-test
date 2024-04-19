@@ -47,13 +47,13 @@ async function main() {
                 slackBotToken: process.env.SLACK_ACCESS_TOKEN,
                 slackChannelId: 'C06V5CYCK32',
                 ts: process.env.SLACK_MESSAGE_TS,
-                blocks: process.env.FBZ_TEMPLATE_START.blocks
+                blocks: process.env.FBZ_TEMPLATE_START
             });
         } else {
             const response = await sendSlackMessage({
                 slackBotToken: process.env.SLACK_ACCESS_TOKEN,
                 slackChannelId: 'C06V5CYCK32',
-                blocks: process.env.FBZ_TEMPLATE_START.blocks
+                blocks: process.env.FBZ_TEMPLATE_START
             });
             console.log(`export SLACK_MESSAGE_TS=${response.ts}`)
         }
