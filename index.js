@@ -14,7 +14,7 @@ async function sendSlackMessage ({blocks, slackBotToken, slackChannelId}) {
     const slackClient = new WebClient(slackBotToken);
 
     return slackClient.chat.postMessage({
-        blocks: blocks,
+        blocks,
         channel: slackChannelId,
         text: '-'
     });
@@ -34,7 +34,7 @@ async function updateSlackMessage ({blocks, slackBotToken, slackChannelId, ts}) 
     const slackClient = new WebClient(slackBotToken);
 
     return slackClient.chat.update({
-        blocks: blocks,
+        blocks,
         channel: slackChannelId,
         ts: ts
     });
