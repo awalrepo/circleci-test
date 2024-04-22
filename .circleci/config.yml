@@ -55,7 +55,7 @@ jobs:
       - run: npm install
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
       - fbz_slack_notif_create
-      - run echo $SLACK_MESSAGE_TS
+      - run: echo $SLACK_MESSAGE_TS
       # - fbz_save_bash_env
   fbz_notify_unit_deployment:
     docker:
