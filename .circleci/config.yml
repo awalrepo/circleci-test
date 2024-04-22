@@ -55,8 +55,7 @@ jobs:
       - run: npm install
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
       - fbz_slack_notif_create
-      - run: echo $SLACK_MESSAGE_TS
-      # - fbz_save_bash_env
+      - fbz_save_bash_env
   fbz_notify_unit_deployment:
     docker:
       - image: cimg/node:lts
@@ -103,21 +102,21 @@ workflows:
     jobs:
       - fbz_notify_start_deployment:
           context: slack-secrets
-      # - fbz_notify_unit_deployment:
-      #     requires:
-      #       - fbz_notify_start_deployment
-      #     context: slack-secrets
-      # - fbz_notify_prod_deployment:
-      #     requires:
-      #       - fbz_notify_unit_deployment
-      #     context: slack-secrets
-      # - fbz_notify_smoke_deployment:
-      #     requires:
-      #       - fbz_notify_prod_deployment
-      #     context: slack-secrets
-      # - fbz_notify_visual_deployment:
-      #     requires:
-      #       - fbz_notify_smoke_deployment
-      #     context: slack-secrets
+      - fbz_notify_unit_deployment:
+          requires:
+            - fbz_notify_start_deployment
+          context: slack-secrets
+      - fbz_notify_prod_deployment:
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
+      - fbz_notify_smoke_deployment:
+          requires:
+            - fbz_notify_prod_deployment
+          context: slack-secrets
+      - fbz_notify_visual_deployment:
+          requires:
+            - fbz_notify_smoke_deployment
+          context: slack-secrets
       
 
