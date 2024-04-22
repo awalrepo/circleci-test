@@ -55,7 +55,7 @@ async function main() {
                 slackChannelId: 'C06V5CYCK32',
                 blocks: process.env.FBZ_TEMPLATE_START
             });
-            console.log(`export SLACK_MESSAGE_TS=${response.ts}`)
+            console.log(response.ts)
         }
     } catch (error) {
         console.error('Error running smoke tests:', error);
