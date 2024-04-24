@@ -25,17 +25,17 @@ commands:
   fbz_save_bash_env:
     steps:
       - run: |
-          cp $BASH_ENV ./tmp/bash_file.env
+          cp $BASH_ENV ~/fbz/bash_file.env
       - persist_to_workspace:
-          root: ./tmp
+          root: ~/fbz
           paths: 
             - bash_file.env
   fbz_load_bash_env:
     steps:
       - attach_workspace:
-          at: ./tmp
+          at: ~/fbz
       - run: |
-          cat ./tmp/bash_file.env > $BASH_ENV
+          cat ~/fbz/bash_file.env > $BASH_ENV
   fbz_slack_notif_create:
     steps:
       - run:
@@ -48,7 +48,7 @@ commands:
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
 jobs:
   fbz_notify_start_deployment:
-    working_directory: ~/other
+    working_directory: ~/fbz
     docker:
       - image: cimg/node:lts
     steps:
