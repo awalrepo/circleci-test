@@ -48,6 +48,7 @@ commands:
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
 jobs:
   fbz_notify_start_deployment:
+    working_directory: ~/tmp
     docker:
       - image: cimg/node:lts
     steps:
