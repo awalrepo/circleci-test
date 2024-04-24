@@ -34,9 +34,8 @@ commands:
     steps:
       - attach_workspace:
           at: ./tmp
-      - run: cd tmp && ls -la
       - run: |
-          cat bash_file.env > $BASH_ENV
+          cat ./tmp/bash_file.env > $BASH_ENV
   fbz_slack_notif_create:
     steps:
       - run:
