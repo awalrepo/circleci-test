@@ -27,7 +27,7 @@ commands:
       - run: |
           cp $BASH_ENV bash_file.env
       - persist_to_workspace:
-          root: .
+          root: ~/tmp
           paths: 
             - bash_file.env
   fbz_load_bash_env:
@@ -59,7 +59,6 @@ jobs:
       - run: pwd
       - run: ls -la
   fbz_notify_unit_deployment:
-    working_directory: ~/tmp
     docker:
       - image: cimg/node:lts
     steps:
