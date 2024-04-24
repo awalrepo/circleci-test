@@ -61,7 +61,7 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
-      # - checkout
+      - checkout
       # - run: npm install
       # - fbz_load_bash_env
       # - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
