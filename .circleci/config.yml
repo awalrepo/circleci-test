@@ -36,6 +36,7 @@ commands:
           at: ~/fbz
       - run: |
           cat ~/fbz/bash_file.env > $BASH_ENV
+      - run: cat ~/fbz/bash_file.env
   fbz_slack_notif_create:
     steps:
       - run:
