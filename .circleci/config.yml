@@ -61,13 +61,13 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
-      - checkout
-      - run: npm install
-      - fbz_load_bash_env
-      - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
-      - fbz_slack_notif_update
-      - fbz_save_bash_env
-      - run: pwd && cd ~/tmp && ls -la
+      # - checkout
+      # - run: npm install
+      # - fbz_load_bash_env
+      # - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
+      # - fbz_slack_notif_update
+      # - fbz_save_bash_env
+      - run: cat fbz_bash.env
   fbz_notify_prod_deployment:
     docker:
       - image: cimg/node:lts
