@@ -32,6 +32,7 @@ commands:
             - bash_file.env
   fbz_load_bash_env:
     steps:
+      - run: cd tmp && ls -la
       - attach_workspace:
           at: ./tmp
       - run: |
