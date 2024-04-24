@@ -23,19 +23,21 @@ commands:
           event: pass
           template: FBZ_TEMPLATE_PASS
   fbz_save_bash_env:
+    working_directory: /tmp
     steps:
       - run: |
           cp $BASH_ENV bash.env
       - persist_to_workspace:
           root: .
           paths: 
-            - bash.env
+            - fbz_bash.env
   fbz_load_bash_env:
+    working_directory: /tmp
     steps:
       - attach_workspace:
           at: .
       - run: |
-          cat bash.env > $BASH_ENV
+          cat fbz_bash.env > $BASH_ENV
   fbz_slack_notif_create:
     steps:
       - run:
