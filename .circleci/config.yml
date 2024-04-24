@@ -57,7 +57,7 @@ jobs:
       - fbz_slack_notif_create
       - fbz_save_bash_env
   fbz_notify_unit_deployment:
-    working_directory: /tmp
+    working_directory: ~/tmp
     docker:
       - image: cimg/node:lts
     steps:
