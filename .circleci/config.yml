@@ -69,6 +69,7 @@ jobs:
       # - fbz_save_bash_env
       - attach_workspace:
           at: ~/tmp
+      - run: pwd
       - run: ls -la
       - run: cat fbz_bash.env
   fbz_notify_prod_deployment:
