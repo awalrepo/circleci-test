@@ -25,7 +25,7 @@ commands:
   fbz_save_bash_env:
     steps:
       - run: |
-          cp $BASH_ENV ~/tmp/bash_file.env
+          cp $BASH_ENV ./tmp/bash_file.env
       - persist_to_workspace:
           root: .
           paths: 
