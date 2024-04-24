@@ -26,7 +26,7 @@ commands:
     working_directory: /tmp
     steps:
       - run: |
-          cp $BASH_ENV bash.env
+          cp $BASH_ENV fbz_bash.env
       - persist_to_workspace:
           root: .
           paths: 
