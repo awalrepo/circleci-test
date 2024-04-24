@@ -32,9 +32,9 @@ commands:
             - bash_file.env
   fbz_load_bash_env:
     steps:
-      - run: cd tmp && ls -la
       - attach_workspace:
           at: ./tmp
+      - run: cd tmp && ls -la
       - run: |
           cat bash_file.env > $BASH_ENV
   fbz_slack_notif_create:
