@@ -23,7 +23,6 @@ commands:
           event: pass
           template: FBZ_TEMPLATE_PASS
   fbz_save_bash_env:
-    working_directory: /tmp
     steps:
       - run: |
           cp $BASH_ENV fbz_bash.env
@@ -32,7 +31,6 @@ commands:
           paths: 
             - fbz_bash.env
   fbz_load_bash_env:
-    working_directory: /tmp
     steps:
       - attach_workspace:
           at: .
