@@ -27,7 +27,7 @@ commands:
       - run: |
           cp $BASH_ENV bash_file.env
       - persist_to_workspace:
-          root: ~/tmp
+          root: /tmp
           paths: 
             - bash_file.env
   fbz_load_bash_env:
