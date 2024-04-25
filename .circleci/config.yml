@@ -24,14 +24,13 @@ commands:
           template: FBZ_TEMPLATE_PASS
   fbz_save_bash_env:
     steps:
-      - run: mkdir -p ~/pipeline/fbz
       - run: |
+          mkdir -p ~/pipeline/fbz
           cp $BASH_ENV ~/pipeline/fbz/bash_file.env
       - persist_to_workspace:
           root: ~/pipeline
           paths: 
             - fbz/bash_file.env
-      - run: cat ~/pipeline/fbz/bash_file.env
   fbz_load_bash_env:
     steps:
       - run: mkdir -p ~/pipeline/fbz
@@ -39,7 +38,6 @@ commands:
           at: ~/pipeline
       - run: |
           cat ~/pipeline/fbz/bash_file.env > $BASH_ENV
-      - run: cat $BASH_ENV
   fbz_slack_notif_create:
     steps:
       - run:
