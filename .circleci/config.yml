@@ -27,15 +27,15 @@ commands:
       - run: |
           cp $BASH_ENV ~/fbz/bash_file.env
       - persist_to_workspace:
-          root: ~/fbz
+          root: ~/
           paths: 
-            - bash_file.env
+            - fbz/bash_file.env
       - run: pwd
       - run: ls -l
   fbz_load_bash_env:
     steps:
       - attach_workspace:
-          at: ~/fbz
+          at: ~/
       - run: |
           cat ~/fbz/bash_file.env > $BASH_ENV
   fbz_slack_notif_create:
@@ -50,18 +50,17 @@ commands:
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
 jobs:
   fbz_notify_start_deployment:
-    working_directory: ~/fbz
     docker:
       - image: cimg/node:lts
     steps:
-      - run: pwd
+      - run: mkdir -p fbz      
       - fbz_notify_start
       - run: npm install
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
-      - fbz_slack_notif_create
+      # - fbz_slack_notif_create
       - fbz_save_bash_env
+      - run: pwd && ls -la
   fbz_notify_unit_deployment:
-    working_directory: /tmp
     docker:
       - image: cimg/node:lts
     steps:
@@ -104,15 +103,15 @@ workflows:
     jobs:
       - fbz_notify_start_deployment:
           context: slack-secrets
-      - fbz_notify_unit_deployment:
-          requires:
-            - fbz_notify_start_deployment
-          context: slack-secrets
-          post-steps:
-            - fbz_load_bash_env
-            - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
-            - fbz_slack_notif_update
-            - fbz_save_bash_env
+      # - fbz_notify_unit_deployment:
+      #     requires:
+      #       - fbz_notify_start_deployment
+      #     context: slack-secrets
+      #     post-steps:
+      #       - fbz_load_bash_env
+      #       - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
+      #       - fbz_slack_notif_update
+      #       - fbz_save_bash_env
       # - fbz_notify_prod_deployment:
       #     requires:
       #       - fbz_notify_unit_deployment
