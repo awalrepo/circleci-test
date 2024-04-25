@@ -31,7 +31,7 @@ commands:
           root: ~/pipeline
           paths: 
             - fbz/bash_file.env
-      - run: cat ~/pipline/fbz/bash_file.env
+      - run: cat ~/pipeline/fbz/bash_file.env
   fbz_load_bash_env:
     steps:
       - run: mkdir -p ~/pipeline/fbz
