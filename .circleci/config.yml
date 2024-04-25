@@ -39,16 +39,23 @@ commands:
           at: ~/pipeline
       - run: |
           cat ~/pipeline/fbz/bash_file.env > $BASH_ENV
-  fbz_slack_notif_create:
+  fbz_slack_notif:
+    parameters:
+      action:
+        type: string
     steps:
       - run:
-          name: Send Slack Notif
+          name: Send Slack Notif - Create
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) eval echo 'export SLACK_MESSAGE_TS=$(npm run test:ci --silent)' >> $BASH_ENV 
-  fbz_slack_notif_update:
-    steps:
+          when:
+            condition:
+              equal: ["create", << parameters.action >>]
       - run:
-          name: Send Slack Notif
+          name: Send Slack Notif - Update
           command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
+          when:
+            condition:
+              equal: ["update", << parameters.action >>]
 jobs:
   fbz_notify_start_deployment:
     docker:
@@ -57,11 +64,12 @@ jobs:
       - fbz_notify_start
       - run: npm install
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
-      - fbz_slack_notif_create
+      - fbz_slack_notif
+          action: create
       - fbz_save_bash_env
       
   fbz_notify_unit_deployment:
-    working_directory: /app
+    working_directory: /tmp
     docker:
       - image: cimg/node:lts
     steps:
@@ -76,7 +84,8 @@ jobs:
       - run: npm install
       - fbz_load_bash_env
       - run: echo 'export FBZ_ICON_PROD=:white_check_mark:' >> $BASH_ENV
-      - fbz_slack_notif_update
+      - fbz_slack_notif
+          action: update
       - fbz_save_bash_env
   fbz_notify_smoke_deployment:
     docker:
@@ -86,7 +95,8 @@ jobs:
       - run: npm install
       - fbz_load_bash_env
       - run: echo 'export FBZ_ICON_SMOKE=:white_check_mark:' >> $BASH_ENV
-      - fbz_slack_notif_update
+      - fbz_slack_notif
+          action: update
       - fbz_save_bash_env
   fbz_notify_visual_deployment:
     docker:
@@ -96,7 +106,8 @@ jobs:
       - run: npm install
       - fbz_load_bash_env
       - run: echo 'export FBZ_ICON_VISUAL=:white_check_mark:' >> $BASH_ENV
-      - fbz_slack_notif_update
+      - fbz_slack_notif
+          action: update
       - fbz_save_bash_env
 
 workflows:
@@ -111,7 +122,8 @@ workflows:
           post-steps:
             - fbz_load_bash_env
             - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
-            - fbz_slack_notif_update
+            - fbz_slack_notif
+                action: update
             - fbz_save_bash_env
       - fbz_notify_prod_deployment:
           requires:
