@@ -24,20 +24,23 @@ commands:
           template: FBZ_TEMPLATE_PASS
   fbz_save_bash_env:
     steps:
+      - run: mkdir -p ~/fbz
       - run: |
           cp $BASH_ENV ~/fbz/bash_file.env
       - persist_to_workspace:
-          root: ~/
+          root: ~/fbz
           paths: 
-            - fbz/bash_file.env
+            - bash_file.env
       - run: pwd
       - run: ls -l
   fbz_load_bash_env:
     steps:
+      - run: mkdir -p ~/fbz
       - attach_workspace:
-          at: ~/
+          at: ~/fbz
       - run: |
           cat ~/fbz/bash_file.env > $BASH_ENV
+      - run: cat $BASH_ENV
   fbz_slack_notif_create:
     steps:
       - run:
@@ -52,8 +55,7 @@ jobs:
   fbz_notify_start_deployment:
     docker:
       - image: cimg/node:lts
-    steps:
-      - run: mkdir -p ~/fbz      
+    steps:      
       - fbz_notify_start
       - run: npm install
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
