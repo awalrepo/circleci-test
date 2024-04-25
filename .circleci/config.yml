@@ -77,6 +77,9 @@ jobs:
     working_directory: /tmp
     docker:
       - image: cimg/node:lts
+    parameters:
+      notif_action:
+        type: string
     steps:
       - checkout
       - run: pwd
@@ -84,35 +87,44 @@ jobs:
   fbz_notify_prod_deployment:
     docker:
       - image: cimg/node:lts
+    parameters:
+      notif_action:
+        type: string
     steps:
       - checkout
       - run: npm install
       - fbz_load_bash_env
       - run: echo 'export FBZ_ICON_PROD=:white_check_mark:' >> $BASH_ENV
       - fbz_slack_notif:
-          action: "update"
+          notif_action: "update"
       - fbz_save_bash_env
   fbz_notify_smoke_deployment:
     docker:
       - image: cimg/node:lts
+    parameters:
+      notif_action:
+        type: string
     steps:
       - checkout
       - run: npm install
       - fbz_load_bash_env
       - run: echo 'export FBZ_ICON_SMOKE=:white_check_mark:' >> $BASH_ENV
       - fbz_slack_notif:
-          action: "update"
+          notif_action: "update"
       - fbz_save_bash_env
   fbz_notify_visual_deployment:
     docker:
       - image: cimg/node:lts
+    parameters:
+      notif_action:
+        type: string
     steps:
       - checkout
       - run: npm install
       - fbz_load_bash_env
       - run: echo 'export FBZ_ICON_VISUAL=:white_check_mark:' >> $BASH_ENV
       - fbz_slack_notif:
-          action: "update"
+          notif_action: "update"
       - fbz_save_bash_env
 
 workflows:
@@ -121,27 +133,30 @@ workflows:
       - fbz_notify_start_deployment:
           notif_action: "create"
           context: slack-secrets
-      # - fbz_notify_unit_deployment:
-      #     requires:
-      #       - fbz_notify_start_deployment
-      #     context: slack-secrets
-      #     post-steps:
-      #       - fbz_load_bash_env
-      #       - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
-      #       - fbz_slack_notif:
-      #           action: "update"
-      #       - fbz_save_bash_env
-      # - fbz_notify_prod_deployment:
-      #     requires:
-      #       - fbz_notify_unit_deployment
-      #     context: slack-secrets
-      # - fbz_notify_smoke_deployment:
-      #     requires:
-      #       - fbz_notify_prod_deployment
-      #     context: slack-secrets
-      # - fbz_notify_visual_deployment:
-      #     requires:
-      #       - fbz_notify_smoke_deployment
-      #     context: slack-secrets
+      - fbz_notify_unit_deployment:
+          requires:
+            - fbz_notify_start_deployment
+          context: slack-secrets
+          post-steps:
+            - fbz_load_bash_env
+            - run: echo 'export FBZ_ICON_UNIT=:white_check_mark:' >> $BASH_ENV
+            - fbz_slack_notif:
+                notif_action: "update"
+            - fbz_save_bash_env
+      - fbz_notify_prod_deployment:
+          notif_action: "update"
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
+      - fbz_notify_smoke_deployment:
+          notif_action: "update"
+          requires:
+            - fbz_notify_prod_deployment
+          context: slack-secrets
+      - fbz_notify_visual_deployment:
+          notif_action: "update"
+          requires:
+            - fbz_notify_smoke_deployment
+          context: slack-secrets
       
 
