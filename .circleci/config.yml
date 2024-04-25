@@ -77,9 +77,6 @@ jobs:
     working_directory: /tmp
     docker:
       - image: cimg/node:lts
-    parameters:
-      notif_action:
-        type: string
     steps:
       - checkout
       - run: pwd
