@@ -36,7 +36,8 @@ async function updateSlackMessage ({blocks, slackBotToken, slackChannelId, ts}) 
     return slackClient.chat.update({
         blocks,
         channel: slackChannelId,
-        ts: ts
+        ts: ts,
+        text: '-'
     });
 };
 
