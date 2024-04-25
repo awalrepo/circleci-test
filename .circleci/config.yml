@@ -30,6 +30,8 @@ commands:
           root: ~/fbz
           paths: 
             - bash_file.env
+      - run: pwd
+      - run: ls -l
   fbz_load_bash_env:
     steps:
       - attach_workspace:
@@ -53,10 +55,10 @@ jobs:
       - image: cimg/node:lts
     steps:
       - run: pwd
-      # - fbz_notify_start
-      # - run: npm install
-      # - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
-      # - fbz_slack_notif_create
+      - fbz_notify_start
+      - run: npm install
+      - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
+      - fbz_slack_notif_create
       # - fbz_save_bash_env
   fbz_notify_unit_deployment:
     docker:
