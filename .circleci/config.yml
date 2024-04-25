@@ -27,6 +27,7 @@ commands:
       - run: |
           mkdir -p ~/pipeline/fbz
           cp $BASH_ENV ~/pipeline/fbz/bash_file.env
+          cat ~/pipeline/fbz/bash_file.env
       - persist_to_workspace:
           root: ~/pipeline
           paths: 
