@@ -44,19 +44,20 @@ commands:
       notif_action:
         type: string
     steps:
-      - run: echo '<< parameters.notif_action >>'
-      # - run:
-      #     name: Send Slack Notif - Create
-      #     command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) eval echo 'export SLACK_MESSAGE_TS=$(npm run test:ci --silent)' >> $BASH_ENV 
-      #     when:
-      #       condition:
-      #         equal: ["create", << parameters.notif_action >>]
-      # - run:
-      #     name: Send Slack Notif - Update
-      #     command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
-      #     when:
-      #       condition:
-      #         equal: ["update", << parameters.notif_action >>]
+      - when:
+          condition:
+            equal: ["create", << parameters.notif_action >>]
+          steps:
+            - run:
+                name: Send Slack Notif - Create
+                command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) eval echo 'export SLACK_MESSAGE_TS=$(npm run test:ci --silent)' >> $BASH_ENV 
+      - when:
+          condition:
+            equal: ["update", << parameters.notif_action >>]
+          steps:
+            - run:
+                name: Send Slack Notif - Update
+                command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
 jobs:
   fbz_notify_start_deployment:
     docker:
@@ -68,7 +69,6 @@ jobs:
       - fbz_notify_start
       - run: npm install
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
-      - run: echo '<< parameters.notif_action >>'
       - fbz_slack_notif:
           notif_action: << parameters.notif_action >>
       - fbz_save_bash_env
