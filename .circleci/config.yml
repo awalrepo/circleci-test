@@ -32,7 +32,8 @@ commands:
           paths: 
             - bash_file.env
       - run: pwd
-      - run: ls -l
+      - run: ls ~/fbz
+      - run: cat $BASH_ENV
   fbz_load_bash_env:
     steps:
       - run: mkdir -p ~/fbz
@@ -61,7 +62,7 @@ jobs:
       - run: echo 'export FBZ_ICON_START=:white_check_mark:' >> $BASH_ENV
       # - fbz_slack_notif_create
       - fbz_save_bash_env
-      - run: pwd && ls ~/
+      - run: pwd && ls ~/fbz
   fbz_notify_unit_deployment:
     docker:
       - image: cimg/node:lts
