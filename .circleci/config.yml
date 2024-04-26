@@ -47,6 +47,11 @@ commands:
       notif_action:
         type: string
     steps:
+      - when:
+          condition:
+            equal: ["update", << parameters.notif_action >>]
+          steps:
+            - fbz_load_bash_env
       - run: 
           command: |
             echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
@@ -69,7 +74,6 @@ commands:
           condition:
             equal: ["update", << parameters.notif_action >>]
           steps:
-            - fbz_load_bash_env
             - run:
                 name: Send Slack Notif - Update
                 command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
