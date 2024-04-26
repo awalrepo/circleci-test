@@ -49,12 +49,11 @@ commands:
       - run: 
           command: |
             echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
-            SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
           name: Slack - Detecting Job Status (FAIL)
           when: on_fail
       - run: 
           command: |
-            echo 'export << parameters.pipeline >>=":white_check_mark:"' >> $BASH_ENV
+            echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
           name: Slack - Detecting Job Status (PASS)
           when: on_success
       - when:
@@ -148,7 +147,6 @@ workflows:
           context: slack-secrets
           post-steps:
             - fbz_load_bash_env
-            - run: exit 1
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
