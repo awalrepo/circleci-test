@@ -52,6 +52,9 @@ commands:
         type: string
       notif_action:
         type: string
+      channel:
+        type: string
+        default: C06V5CYCK32
     steps:
       - run: 
           command: |
@@ -70,7 +73,7 @@ commands:
             - run:
                 name: Send Slack Notif - Create
                 command: |
-                  SLACK_CHANNEL=C06V5CYCK32 SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_CREATE" | jq -c | jq -R))
+                  SLACK_CHANNEL=<< parameters.channel >> SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_CREATE" | jq -c | jq -R))
                   SLACK_SENT_RESPONSE=$(curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.postMessage)
                   eval echo 'export SLACK_MESSAGE_TS=$(echo "$SLACK_SENT_RESPONSE" | jq '.ts')' >> $BASH_ENV
                 when: always
@@ -81,7 +84,7 @@ commands:
             - run:
                 name: Send Slack Notif - Update
                 command: |
-                  SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
+                  SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
                   curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
                 when: always
       - fbz_save_bash_env
