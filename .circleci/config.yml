@@ -47,11 +47,6 @@ commands:
       notif_action:
         type: string
     steps:
-      - when:
-          condition:
-            equal: ["update", << parameters.notif_action >>]
-          steps:
-            - fbz_load_bash_env
       - run: 
           command: |
             echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
@@ -97,6 +92,7 @@ jobs:
     docker:
       - image: cimg/node:lts
     steps:
+      - fbz_load_bash_env
       - checkout
       - run: pwd
       - run: npm install
@@ -107,6 +103,7 @@ jobs:
       notif_action:
         type: string
     steps:
+      - fbz_load_bash_env
       - checkout
       - run: npm install
       - fbz_slack_notif:
@@ -119,6 +116,7 @@ jobs:
       notif_action:
         type: string
     steps:
+      - fbz_load_bash_env
       - checkout
       - run: npm install
       - run: exit 1
@@ -132,6 +130,7 @@ jobs:
       notif_action:
         type: string
     steps:
+      - fbz_load_bash_env
       - checkout
       - run: npm install
       - fbz_slack_notif:
