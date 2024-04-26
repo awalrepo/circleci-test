@@ -59,19 +59,19 @@ commands:
       - when:
           condition:
             equal: ["create", << parameters.notif_action >>]
-            or: [on_fail]
           steps:
             - run:
                 name: Send Slack Notif - Create
                 command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) eval echo 'export SLACK_MESSAGE_TS=$(npm run test:ci --silent)' >> $BASH_ENV 
+                when: always
       - when:
           condition:
             equal: ["update", << parameters.notif_action >>]
-            or: [on_fail]
           steps:
             - run:
                 name: Send Slack Notif - Update
                 command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
+                when: always
 jobs:
   fbz_notify_start_deployment:
     docker:
