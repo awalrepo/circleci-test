@@ -86,6 +86,7 @@ jobs:
       - fbz_save_bash_env
       
   fbz_notify_unit_deployment:
+    working_directory: /tmp
     docker:
       - image: cimg/node:lts
     steps:
