@@ -24,7 +24,7 @@ commands:
           template: FBZ_TEMPLATE_PASS
   fbz_notify_template:
     steps:
-      # - checkout
+      - checkout
       - run: echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> $BASH_ENV
       - run: echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
   fbz_save_bash_env:
@@ -39,13 +39,13 @@ commands:
             - fbz/bash_file.env
   fbz_load_bash_env:
     steps:
+      - checkout
       - run: mkdir -p ~/pipeline/fbz
       - attach_workspace:
           at: ~/pipeline
       - run: |
           cat ~/pipeline/fbz/bash_file.env > $BASH_ENV
           cat $BASH_ENV
-      - checkout
   fbz_slack_notif:
     parameters:
       pipeline:
