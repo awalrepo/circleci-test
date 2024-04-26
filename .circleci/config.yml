@@ -104,6 +104,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
+      - checkout
       - fbz_load_bash_env
       
   fbz_notify_prod_deployment:
@@ -113,8 +114,8 @@ jobs:
       notif_action:
         type: string
     steps:
-      - fbz_load_bash_env
       - checkout
+      - fbz_load_bash_env
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_PROD"
           notif_action: "update"
@@ -125,8 +126,8 @@ jobs:
       notif_action:
         type: string
     steps:
-      - fbz_load_bash_env
       - checkout
+      - fbz_load_bash_env
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_SMOKE"
           notif_action: "update"
@@ -137,8 +138,8 @@ jobs:
       notif_action:
         type: string
     steps:
-      - fbz_load_bash_env
       - checkout
+      - fbz_load_bash_env
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_VISUAL"
           notif_action: "update"
@@ -154,7 +155,6 @@ workflows:
             - fbz_notify_start_deployment
           context: slack-secrets
           post-steps:
-            - checkout
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
