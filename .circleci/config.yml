@@ -69,9 +69,10 @@ commands:
                 name: Send Slack Notif - Create
                 # command: SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) eval echo 'export SLACK_MESSAGE_TS=$(npm run test:ci --silent)' >> $BASH_ENV 
                 command: |
-                  echo 'export SLACK_CHANNEL=C06V5CYCK32' >> $BASH_ENV
+                  echo 'export SLACK_CHANNEL="C06V5CYCK32"' >> $BASH_ENV
                   SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_CREATE" | jq -c | jq -R))
                   echo $SLACK_MSG_BODY
+                  echo $SLACK_CHANNEL
                 when: always
       - when:
           condition:
