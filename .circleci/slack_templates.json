@@ -374,7 +374,7 @@
     "fbz_update": {
         "channel": "$SLACK_CHANNEL",
         "text": "-",
-        "ts": "-",
+        "ts": "$SLACK_MESSAGE_TS",
         "blocks": [
             {
                 "type": "rich_text",
