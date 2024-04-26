@@ -25,7 +25,7 @@ commands:
   fbz_notify_template:
     steps:
       - checkout
-      - run: eval echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> $BASH_ENV
+      - run: eval echo 'export FBZ_TEMPLATE_CREATE="$(jq .fbz_create ./.circleci/slack_templates.json)"' >> $BASH_ENV
       - run: cat $BASH_ENV
       # - run: echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
   fbz_save_bash_env:
