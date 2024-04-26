@@ -121,6 +121,7 @@ jobs:
     steps:
       - checkout
       - run: npm install
+      - run: exit 1
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_SMOKE"
           notif_action: "update"
