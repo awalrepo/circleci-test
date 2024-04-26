@@ -370,5 +370,125 @@
                 ]
             }
         ]
+    },
+    "fbz_update": {
+        "channel": "$SLACK_CHANNEL",
+        "text": "-",
+        "ts": "-",
+        "blocks": [
+            {
+                "type": "rich_text",
+                "elements": [
+                    {
+                        "type": "rich_text_section",
+                        "elements": [
+                            {
+                                "type": "emoji",
+                                "name": "rocket"
+                            },
+                            {
+                                "type": "text",
+                                "text": " Pipeline Update for Branch:",
+                                "style": {
+                                    "bold": true
+                                }
+                            },
+                            {
+                                "type": "text",
+                                "text": " $CIRCLE_BRANCH"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "Started by: $CIRCLE_USERNAME",
+                        "emoji": true
+                    }
+                ]
+            },
+            {
+                "type": "context",
+                "elements": [
+                    {
+                        "type": "plain_text",
+                        "text": "When: $(TZ='America/New_York' date +'%m/%d/%Y %T')",
+                        "emoji": true
+                    }
+                ]
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "${FBZ_ICON_START:=:white_square_button:} Pipeline started",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "${FBZ_ICON_UNIT:=:white_square_button:} Unit / Integration tests passed",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "${FBZ_ICON_PROD:=:white_square_button:} Changes deployed to production",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "${FBZ_ICON_SMOKE:=:white_square_button:} Smoke test finished",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "${FBZ_ICON_VISUAL:=:white_square_button:} Visual regression test finished",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "divider"
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "View Job"
+                        },
+                        "url": "${CIRCLE_BUILD_URL}"
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "View Site",
+                            "emoji": true
+                        },
+                        "url": "https://financebuzz.com"
+                    }
+                ]
+            }
+        ]
     }
 }
