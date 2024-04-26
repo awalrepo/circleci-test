@@ -53,12 +53,13 @@ commands:
           when: on_fail
       - run: 
           command: |
-            echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
+            echo 'export << parameters.pipeline >>=":white_check_mark:"' >> $BASH_ENV
           name: Slack - Detecting Job Status (PASS)
           when: on_success
       - when:
           condition:
             equal: ["create", << parameters.notif_action >>]
+            or: [on_fail]
           steps:
             - run:
                 name: Send Slack Notif - Create
@@ -66,6 +67,7 @@ commands:
       - when:
           condition:
             equal: ["update", << parameters.notif_action >>]
+            or: [on_fail]
           steps:
             - run:
                 name: Send Slack Notif - Update
@@ -147,6 +149,7 @@ workflows:
           context: slack-secrets
           post-steps:
             - fbz_load_bash_env
+            - run: exit 1
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
