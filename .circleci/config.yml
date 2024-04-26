@@ -103,7 +103,6 @@ jobs:
       - image: cimg/base:stable
     steps:
       - fbz_load_bash_env
-      - checkout
       
   fbz_notify_prod_deployment:
     docker:
@@ -124,7 +123,6 @@ jobs:
         type: string
     steps:
       - fbz_load_bash_env
-      - run: exit 1
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_SMOKE"
           notif_action: "update"
