@@ -96,16 +96,16 @@ jobs:
         type: string
     steps:      
       - fbz_notify_template
-      # - fbz_slack_notif:
-      #     pipeline: "FBZ_ICON_START"
-      #     notif_action: << parameters.notif_action >>
+      - fbz_slack_notif:
+          pipeline: "FBZ_ICON_START"
+          notif_action: << parameters.notif_action >>
       
   fbz_notify_unit_deployment:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
       - fbz_load_bash_env
+      - checkout
       
   fbz_notify_prod_deployment:
     docker:
@@ -114,8 +114,8 @@ jobs:
       notif_action:
         type: string
     steps:
-      - checkout
       - fbz_load_bash_env
+      - checkout
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_PROD"
           notif_action: "update"
@@ -126,8 +126,8 @@ jobs:
       notif_action:
         type: string
     steps:
-      - checkout
       - fbz_load_bash_env
+      - checkout
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_SMOKE"
           notif_action: "update"
@@ -138,8 +138,8 @@ jobs:
       notif_action:
         type: string
     steps:
-      - checkout
       - fbz_load_bash_env
+      - checkout
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_VISUAL"
           notif_action: "update"
