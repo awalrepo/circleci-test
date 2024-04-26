@@ -149,7 +149,6 @@ workflows:
           context: slack-secrets
           post-steps:
             - fbz_load_bash_env
-            - run: exit 1
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
