@@ -153,20 +153,20 @@ workflows:
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
-      # - fbz_notify_prod_deployment:
-      #     notif_action: "update"
-      #     requires:
-      #       - fbz_notify_unit_deployment
-      #     context: slack-secrets
-      # - fbz_notify_smoke_deployment:
-      #     notif_action: "update"
-      #     requires:
-      #       - fbz_notify_prod_deployment
-      #     context: slack-secrets
-      # - fbz_notify_visual_deployment:
-      #     notif_action: "update"
-      #     requires:
-      #       - fbz_notify_smoke_deployment
-      #     context: slack-secrets
+      - fbz_notify_prod_deployment:
+          notif_action: "update"
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
+      - fbz_notify_smoke_deployment:
+          notif_action: "update"
+          requires:
+            - fbz_notify_prod_deployment
+          context: slack-secrets
+      - fbz_notify_visual_deployment:
+          notif_action: "update"
+          requires:
+            - fbz_notify_smoke_deployment
+          context: slack-secrets
       
 
