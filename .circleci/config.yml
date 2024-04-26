@@ -49,6 +49,7 @@ commands:
       - run: 
           command: |
             echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
+            SLACK_ACCESS_TOKEN=$SLACK_ACCESS_TOKEN SLACK_CHANNEL=C06V5CYCK32 SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS FBZ_TEMPLATE_START=$(eval echo $(echo "$FBZ_TEMPLATE_START" | jq -c | jq -R)) npm run test:ci 
           name: Slack - Detecting Job Status (FAIL)
           when: on_fail
       - run: 
