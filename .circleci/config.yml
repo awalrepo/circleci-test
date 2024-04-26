@@ -103,6 +103,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - fbz_load_bash_env
+      - checkout
       
   fbz_notify_prod_deployment:
     docker:
