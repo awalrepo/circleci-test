@@ -275,7 +275,7 @@ workflows:
       - fbz_notify_visual_deployment:
           notif_action: "update"
           requires:
-            - fbz_notify_smoke_deployment
+            - "Update state smoke test finish"
 
       - fbz_notif_update_state:
           name: "Update state visual test finish"
