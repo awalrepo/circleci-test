@@ -66,13 +66,11 @@ commands:
       - run: 
           command: |
             echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
-            echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
           name: Slack - Detecting Job Status (FAIL)
           when: on_fail
       - run: 
           command: |
             echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> $BASH_ENV
-            echo 'export SLACK_PARAM_MENTIONS=""' >> $BASH_ENV
           name: Slack - Detecting Job Status (PASS)
           when: on_success
       - when:
