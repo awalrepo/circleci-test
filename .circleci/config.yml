@@ -221,6 +221,7 @@ workflows:
           name: "Update state unit test finish"
           requires:
             - fbz_notify_unit_deployment
+          context: slack-secrets
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
           success_mark: ":double_vertical_bar:"
@@ -234,6 +235,7 @@ workflows:
           name: "Update state approved"
           requires:
             - hold-deploy-production-pipeline
+          context: slack-secrets
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
 
@@ -247,6 +249,7 @@ workflows:
           name: "Update state prod deployment finish"
           requires:
             - fbz_notify_prod_deployment
+          context: slack-secrets
           pipeline: "FBZ_ICON_PROD"
           notif_action: "update"
 
@@ -260,6 +263,7 @@ workflows:
           name: "Update state smoke test finish"
           requires:
             - fbz_notify_smoke_deployment
+          context: slack-secrets
           pipeline: "FBZ_ICON_SMOKE"
           notif_action: "update"
 
@@ -273,6 +277,7 @@ workflows:
           name: "Update state visual test finish"
           requires:
             - fbz_notify_visual_deployment
+          context: slack-secrets
           pipeline: "FBZ_ICON_VISUAL"
           notif_action: "update"
       
