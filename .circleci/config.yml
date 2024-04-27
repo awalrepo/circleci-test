@@ -244,9 +244,9 @@ workflows:
                 notif_action: "update"
 
       - fbz_notify_visual_deployment:
-          notif_action: "update"
           requires:
             - fbz_notify_smoke_deployment
+          context: slack-secrets
           post-steps:
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_VISUAL"
