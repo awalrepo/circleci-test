@@ -79,7 +79,10 @@ commands:
           condition:
             equal: ["on_hold", << parameters.notif_action >>]
           steps:
-            - run: echo 'export SLACK_USER="@$CIRCLE_USERNAME"' >> $BASH_ENV
+            - run: 
+                command: |
+                  echo 'export SLACK_USER="@$CIRCLE_USERNAME"' >> $BASH_ENV
+                  echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
       - when:
           condition:
             equal: ["create", << parameters.notif_action >>]
