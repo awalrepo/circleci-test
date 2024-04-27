@@ -1,4 +1,8 @@
 version: 2.1
+parameters:
+  slack-channel:
+    type: string
+    default: C06V5CYCK32
 orbs:
   slack: circleci/slack@4.9.3
 commands:
@@ -54,7 +58,7 @@ commands:
         type: string
       channel:
         type: string
-        default: C06V5CYCK32
+        default: << pipeline.parameters.slack-channel >>
       success_mark:
         type: string
         default: ":white_check_mark:"
@@ -73,7 +77,7 @@ commands:
           condition:
             equal: ["on_hold", << parameters.notif_action >>]
           steps:
-            - run: echo 'export SLACK_USER="<@$CIRCLE_USERNAME>"' >> $BASH_ENV
+            - run: echo 'export SLACK_USER="@$CIRCLE_USERNAME"' >> $BASH_ENV
       - when:
           condition:
             equal: ["create", << parameters.notif_action >>]
