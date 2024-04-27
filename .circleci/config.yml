@@ -210,15 +210,21 @@ workflows:
     jobs:
       - fbz_notify_start_deployment:
           notif_action: "create"
-          context: slack-secrets
 
       - fbz_notify_unit_deployment:
           requires:
             - fbz_notify_start_deployment
-          context: slack-secrets
 
       - fbz_notif_update_state:
           name: "Update state unit test finish"
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
+          pipeline: "FBZ_ICON_UNIT"
+          notif_action: "update"
+
+      - fbz_notif_update_state:
+          name: "Update state hold"
           requires:
             - fbz_notify_unit_deployment
           context: slack-secrets
@@ -229,7 +235,7 @@ workflows:
       - hold-deploy-production-pipeline:
           type: approval
           requires:
-            - "Update state unit test finish"
+            - "Update state hold"
 
       - fbz_notif_update_state:
           name: "Update state approved"
