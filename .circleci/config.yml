@@ -215,6 +215,7 @@ workflows:
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
+
       - fbz_notif_update_state:
           name: "Update state hold"
           requires:
@@ -223,6 +224,10 @@ workflows:
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
           success_mark: ":double_vertical_bar:"
+          filters:
+            branches:
+              only:
+                - main
 
       - hold-deploy-production-pipeline:
           type: approval
