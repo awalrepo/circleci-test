@@ -128,7 +128,15 @@ jobs:
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
           success_mark: ":double_vertical_bar:"
-      
+  fbz_notify_approve:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - fbz_load_bash_env
+      - checkout
+      - fbz_slack_notif:
+          pipeline: "FBZ_ICON_HOLD"
+          notif_action: "on_hold"
   fbz_notify_prod_deployment:
     docker:
       - image: cimg/base:stable
@@ -188,10 +196,14 @@ workflows:
           type: approval
           requires:
             - fbz_notify_on_hold
+      - fbz_notify_approve:
+          requires:
+            - hold-deploy-production-pipeline
+          context: slack-secrets
       - fbz_notify_prod_deployment:
           notif_action: "update"
           requires:
-            - hold-deploy-production-pipeline
+            - fbz_notify_approve
           context: slack-secrets
       - fbz_notify_smoke_deployment:
           notif_action: "update"
