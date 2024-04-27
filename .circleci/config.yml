@@ -71,7 +71,6 @@ commands:
             equal: ["on_hold", << parameters.pipeline >>]
           steps:
             - run: echo 'export SLACK_USER="@$(echo $CIRCLE_USERNAME)"' >> $BASH_ENV
-
       - when:
           condition:
             equal: ["create", << parameters.notif_action >>]
@@ -85,8 +84,9 @@ commands:
                 when: always
       - when:
           condition:
-            equal: ["update", << parameters.notif_action >>]
-            or: ["on_hold", << parameters.notif_action >>]
+            or:
+              equal: ["update", << parameters.notif_action >>]
+              equal: ["on_hold", << parameters.notif_action >>]
           steps:
             - run:
                 name: Send Slack Notif - Update
