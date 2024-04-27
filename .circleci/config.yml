@@ -191,7 +191,6 @@ jobs:
     steps:
       - fbz_load_bash_env
       - checkout
-      - run: exit 1
 
   fbz_notify_visual_deployment:
     docker:
