@@ -85,8 +85,8 @@ commands:
       - when:
           condition:
             or:
-              equal: ["update", << parameters.notif_action >>]
-              equal: ["on_hold", << parameters.notif_action >>]
+              - equal: ["update", << parameters.notif_action >>]
+              - equal: ["on_hold", << parameters.notif_action >>]
           steps:
             - run:
                 name: Send Slack Notif - Update
