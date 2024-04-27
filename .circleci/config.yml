@@ -33,22 +33,30 @@ commands:
       - run: echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
   fbz_save_bash_env:
     steps:
-      - run: |
-          mkdir -p ~/pipeline/fbz
-          cp $BASH_ENV ~/pipeline/fbz/bash_file.env
-          cat ~/pipeline/fbz/bash_file.env
-      - persist_to_workspace:
-          root: ~/pipeline
-          paths: 
-            - fbz/bash_file.env
+      - when:
+          condition:
+            equal: ["main", << pipeline.git.branch >>]
+          steps:
+            - run: |
+                mkdir -p ~/pipeline/fbz
+                cp $BASH_ENV ~/pipeline/fbz/bash_file.env
+                cat ~/pipeline/fbz/bash_file.env
+            - persist_to_workspace:
+                root: ~/pipeline
+                paths: 
+                  - fbz/bash_file.env
   fbz_load_bash_env:
     steps:
-      - run: mkdir -p ~/pipeline/fbz
-      - attach_workspace:
-          at: ~/pipeline
-      - run: |
-          cat ~/pipeline/fbz/bash_file.env > $BASH_ENV
-          cat $BASH_ENV
+      - when:
+          condition:
+            equal: ["main", << pipeline.git.branch >>]
+          steps:
+            - run: mkdir -p ~/pipeline/fbz
+            - attach_workspace:
+                at: ~/pipeline
+            - run: |
+                cat ~/pipeline/fbz/bash_file.env > $BASH_ENV
+                cat $BASH_ENV
 
   fbz_slack_notif:
     parameters:
@@ -207,53 +215,51 @@ workflows:
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
-                
+      - fbz_notif_update_state:
+          name: "Update state hold"
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
+          pipeline: "FBZ_ICON_HOLD"
+          notif_action: "on_hold"
+          success_mark: ":double_vertical_bar:"
 
-      # - fbz_notif_update_state:
-      #     name: "Update state hold"
-      #     requires:
-      #       - fbz_notify_unit_deployment
-      #     context: slack-secrets
-      #     pipeline: "FBZ_ICON_HOLD"
-      #     notif_action: "on_hold"
-      #     success_mark: ":double_vertical_bar:"
+      - hold-deploy-production-pipeline:
+          type: approval
+          requires:
+            - "Update state hold"
 
-      # - hold-deploy-production-pipeline:
-      #     type: approval
-      #     requires:
-      #       - "Update state hold"
+      - fbz_notif_update_state:
+          name: "Update state approved"
+          requires:
+            - hold-deploy-production-pipeline
+          context: slack-secrets
+          pipeline: "FBZ_ICON_HOLD"
+          notif_action: "on_hold"
 
-      # - fbz_notif_update_state:
-      #     name: "Update state approved"
-      #     requires:
-      #       - hold-deploy-production-pipeline
-      #     context: slack-secrets
-      #     pipeline: "FBZ_ICON_HOLD"
-      #     notif_action: "on_hold"
+      - fbz_notify_prod_deployment:
+          requires:
+            - "Update state approved"
+          context: slack-secrets
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_PROD"
+                notif_action: "update"
 
-      # - fbz_notify_prod_deployment:
-      #     requires:
-      #       - "Update state approved"
-      #     context: slack-secrets
-      #     post-steps:
-      #       - fbz_slack_notif:
-      #           pipeline: "FBZ_ICON_PROD"
-      #           notif_action: "update"
+      - fbz_notify_smoke_deployment:
+          requires:
+            - fbz_notify_prod_deployment
+          context: slack-secrets
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_SMOKE"
+                notif_action: "update"
 
-      # - fbz_notify_smoke_deployment:
-      #     requires:
-      #       - fbz_notify_prod_deployment
-      #     context: slack-secrets
-      #     post-steps:
-      #       - fbz_slack_notif:
-      #           pipeline: "FBZ_ICON_SMOKE"
-      #           notif_action: "update"
-
-      # - fbz_notify_visual_deployment:
-      #     requires:
-      #       - fbz_notify_smoke_deployment
-      #     context: slack-secrets
-      #     post-steps:
-      #       - fbz_slack_notif:
-      #           pipeline: "FBZ_ICON_VISUAL"
-      #           notif_action: "update"
+      - fbz_notify_visual_deployment:
+          requires:
+            - fbz_notify_smoke_deployment
+          context: slack-secrets
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_VISUAL"
+                notif_action: "update"
