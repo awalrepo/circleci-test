@@ -68,7 +68,7 @@ commands:
           when: on_success
       - when:
           condition:
-            equal: ["on_hold", << parameters.pipeline >>]
+            equal: ["on_hold", << parameters.notif_action >>]
           steps:
             - run: echo 'export SLACK_USER="@$(echo $CIRCLE_USERNAME)"' >> $BASH_ENV
       - when:
