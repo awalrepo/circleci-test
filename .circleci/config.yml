@@ -198,6 +198,10 @@ workflows:
       - fbz_notify_start_deployment:
           context: slack-secrets
           notif_action: "create"
+          filters:
+            branches:
+              only:
+                - main
 
       - fbz_notify_unit_deployment:
           requires:
