@@ -63,50 +63,54 @@ commands:
         type: string
         default: ":white_check_mark:"
     steps:
-      - run: 
-          command: |
-            echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
-            echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
-          name: Slack - Detecting Job Status (FAIL)
-          when: on_fail
-      - run: 
-          command: |
-            echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> $BASH_ENV
-            echo 'export SLACK_PARAM_MENTIONS=" "' >> $BASH_ENV
-          name: Slack - Detecting Job Status (PASS)
-          when: on_success
       - when:
-          condition:
-            equal: ["on_hold", << parameters.notif_action >>]
+          condition: 
+            equal: ["main", << pipeline.git.branch >>]
           steps:
             - run: 
                 command: |
-                  echo 'export SLACK_USER="@$CIRCLE_USERNAME"' >> $BASH_ENV
+                  echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
                   echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
-      - when:
-          condition:
-            equal: ["create", << parameters.notif_action >>]
-          steps:
-            - run:
-                name: Send Slack Notif - Create
+                name: Slack - Detecting Job Status (FAIL)
+                when: on_fail
+            - run: 
                 command: |
-                  SLACK_CHANNEL=<< parameters.channel >> SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_CREATE" | jq -c | jq -R))
-                  SLACK_SENT_RESPONSE=$(curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.postMessage)
-                  eval echo 'export SLACK_MESSAGE_TS=$(echo "$SLACK_SENT_RESPONSE" | jq '.ts')' >> $BASH_ENV
-                when: always
-      - when:
-          condition:
-            or:
-              - equal: ["update", << parameters.notif_action >>]
-              - equal: ["on_hold", << parameters.notif_action >>]
-          steps:
-            - run:
-                name: Send Slack Notif - Update
-                command: |
-                  SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
-                  curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
-                when: always
-      - fbz_save_bash_env
+                  echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> $BASH_ENV
+                  echo 'export SLACK_PARAM_MENTIONS=" "' >> $BASH_ENV
+                name: Slack - Detecting Job Status (PASS)
+                when: on_success
+            - when:
+                condition:
+                  equal: ["on_hold", << parameters.notif_action >>]
+                steps:
+                  - run: 
+                      command: |
+                        echo 'export SLACK_USER="@$CIRCLE_USERNAME"' >> $BASH_ENV
+                        echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
+            - when:
+                condition:
+                  equal: ["create", << parameters.notif_action >>]
+                steps:
+                  - run:
+                      name: Send Slack Notif - Create
+                      command: |
+                        SLACK_CHANNEL=<< parameters.channel >> SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_CREATE" | jq -c | jq -R))
+                        SLACK_SENT_RESPONSE=$(curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.postMessage)
+                        eval echo 'export SLACK_MESSAGE_TS=$(echo "$SLACK_SENT_RESPONSE" | jq '.ts')' >> $BASH_ENV
+                      when: always
+            - when:
+                condition:
+                  or:
+                    - equal: ["update", << parameters.notif_action >>]
+                    - equal: ["on_hold", << parameters.notif_action >>]
+                steps:
+                  - run:
+                      name: Send Slack Notif - Update
+                      command: |
+                        SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
+                        curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
+                      when: always
+            - fbz_save_bash_env
 jobs:
   fbz_notify_start_deployment:
     docker:
