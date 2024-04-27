@@ -203,14 +203,13 @@ workflows:
           requires:
             - fbz_notify_start_deployment
           context: slack-secrets
-          post-steps:
-            when:
-              condition:
-                equal: ["test", << pipeline.git.branch >> ]
-              steps:
-                - fbz_slack_notif:
-                    pipeline: "FBZ_ICON_UNIT"
-                    notif_action: "update"
+          when:
+            condition:
+              equal: ["test", << pipeline.git.branch >> ]
+            post-steps:
+              - fbz_slack_notif:
+                  pipeline: "FBZ_ICON_UNIT"
+                  notif_action: "update"
 
       - fbz_notif_update_state:
           name: "Update state hold"
