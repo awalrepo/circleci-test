@@ -451,7 +451,7 @@
             {
                 "type": "section",
                 "text": {
-                    "type": "plain_text",
+                    "type": "mrkdwn",
                     "text": "${FBZ_ICON_HOLD:=:white_square_button:} Waiting for approval <@UCX6D3JG4>",
                     "emoji": true
                 }
