@@ -158,10 +158,18 @@ workflows:
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
+      - hold-deploy-production-pipeline:
+          type: approval
+          requires:
+            - fbz_notify_unit_deployment
+          filters:
+            branches:
+              only:
+                - master
       - fbz_notify_prod_deployment:
           notif_action: "update"
           requires:
-            - fbz_notify_unit_deployment
+            - hold-deploy-production-pipeline
           context: slack-secrets
       - fbz_notify_smoke_deployment:
           notif_action: "update"
