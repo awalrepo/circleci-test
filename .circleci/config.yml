@@ -138,8 +138,8 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      # - fbz_load_bash_env
-      # - checkout
+      - fbz_load_bash_env
+      - checkout
       - run: echo "fbz_notify_unit_deployment"
 
   fbz_notify_on_hold:
@@ -166,43 +166,25 @@ jobs:
   fbz_notify_prod_deployment:
     docker:
       - image: cimg/base:stable
-    parameters:
-      notif_action:
-        type: string
     steps:
-      # - fbz_load_bash_env
-      # - checkout
-      # - fbz_slack_notif:
-      #     pipeline: "FBZ_ICON_PROD"
-      #     notif_action: "update"
+      - fbz_load_bash_env
+      - checkout
       - run: echo "fbz_notify_prod_deployment"
 
   fbz_notify_smoke_deployment:
     docker:
       - image: cimg/base:stable
-    parameters:
-      notif_action:
-        type: string
     steps:
-      # - fbz_load_bash_env
-      # - checkout
-      # - fbz_slack_notif:
-      #     pipeline: "FBZ_ICON_SMOKE"
-      #     notif_action: "update"
+      - fbz_load_bash_env
+      - checkout
       - run: exit 1
 
   fbz_notify_visual_deployment:
     docker:
       - image: cimg/base:stable
-    parameters:
-      notif_action:
-        type: string
     steps:
-      # - fbz_load_bash_env
-      # - checkout
-      # - fbz_slack_notif:
-      #     pipeline: "FBZ_ICON_VISUAL"
-      #     notif_action: "update"
+      - fbz_load_bash_env
+      - checkout
       - run: echo "fbz_notify_visual_deployment"
 
 workflows:
@@ -215,19 +197,16 @@ workflows:
       - fbz_notify_unit_deployment:
           requires:
             - fbz_notify_start_deployment
-
-      - fbz_notif_update_state:
-          name: "Update state unit test finish"
-          requires:
-            - fbz_notify_unit_deployment
           context: slack-secrets
-          pipeline: "FBZ_ICON_UNIT"
-          notif_action: "update"
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_UNIT"
+                notif_action: "update"
 
       - fbz_notif_update_state:
           name: "Update state hold"
           requires:
-            - "Update state unit test finish"
+            - fbz_notify_unit_deployment
           context: slack-secrets
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
@@ -247,42 +226,28 @@ workflows:
           notif_action: "on_hold"
 
       - fbz_notify_prod_deployment:
-          notif_action: "update"
           requires:
             - "Update state approved"
+          context: slack-secrets
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_PROD"
+                notif_action: "update"
 
-      - fbz_notif_update_state:
-          name: "Update state prod deployment finish"
+      - fbz_notify_smoke_deployment:
           requires:
             - fbz_notify_prod_deployment
           context: slack-secrets
-          pipeline: "FBZ_ICON_PROD"
-          notif_action: "update"
-
-      - fbz_notify_smoke_deployment:
-          notif_action: "update"
-          requires:
-            - "Update state prod deployment finish"
-      
-      - fbz_notif_update_state:
-          name: "Update state smoke test finish"
-          requires:
-            - fbz_notify_smoke_deployment
-          context: slack-secrets
-          pipeline: "FBZ_ICON_SMOKE"
-          notif_action: "update"
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_SMOKE"
+                notif_action: "update"
 
       - fbz_notify_visual_deployment:
           notif_action: "update"
           requires:
-            - "Update state smoke test finish"
-
-      - fbz_notif_update_state:
-          name: "Update state visual test finish"
-          requires:
-            - fbz_notify_visual_deployment
-          context: slack-secrets
-          pipeline: "FBZ_ICON_VISUAL"
-          notif_action: "update"
-      
-
+            - fbz_notify_smoke_deployment
+          post-steps:
+            - fbz_slack_notif:
+                pipeline: "FBZ_ICON_VISUAL"
+                notif_action: "update"
