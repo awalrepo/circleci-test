@@ -509,7 +509,7 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
-                    "text": " $SLACK_PARAM_MENTIONS",
+                    "text": "$SLACK_PARAM_MENTIONS",
                     "emoji": true
                 }
             }
