@@ -162,10 +162,6 @@ workflows:
           type: approval
           requires:
             - fbz_notify_unit_deployment
-          filters:
-            branches:
-              only:
-                - master
       - fbz_notify_prod_deployment:
           notif_action: "update"
           requires:
