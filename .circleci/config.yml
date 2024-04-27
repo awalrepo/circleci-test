@@ -70,7 +70,7 @@ commands:
           condition:
             equal: ["on_hold", << parameters.notif_action >>]
           steps:
-            - run: echo 'export SLACK_USER="@awal"' >> $BASH_ENV
+            - run: echo 'export SLACK_USER=<@DCX8Z063D>' >> $BASH_ENV
       - when:
           condition:
             equal: ["create", << parameters.notif_action >>]
