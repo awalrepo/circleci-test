@@ -209,6 +209,7 @@ workflows:
   build-test-and-deploy:
     jobs:
       - fbz_notify_start_deployment:
+          context: slack-secrets
           notif_action: "create"
 
       - fbz_notify_unit_deployment:
@@ -249,7 +250,6 @@ workflows:
           notif_action: "update"
           requires:
             - "Update state approved"
-          context: slack-secrets
 
       - fbz_notif_update_state:
           name: "Update state prod deployment finish"
@@ -263,7 +263,6 @@ workflows:
           notif_action: "update"
           requires:
             - "Update state prod deployment finish"
-          context: slack-secrets
       
       - fbz_notif_update_state:
           name: "Update state smoke test finish"
@@ -277,7 +276,6 @@ workflows:
           notif_action: "update"
           requires:
             - fbz_notify_smoke_deployment
-          context: slack-secrets
 
       - fbz_notif_update_state:
           name: "Update state visual test finish"
