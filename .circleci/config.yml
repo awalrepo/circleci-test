@@ -5,7 +5,7 @@ parameters:
     default: C06V5CYCK32
   slack-notif-branch:
     type: string
-    default: test
+    default: main
 orbs:
   slack: circleci/slack@4.9.3
 commands:
