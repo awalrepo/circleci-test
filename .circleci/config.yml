@@ -66,12 +66,13 @@ commands:
       - run: 
           command: |
             echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
-            echo 'export SLACK_USER="@$CIRCLE_USERNAME"' >> $BASH_ENV
+            echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
           name: Slack - Detecting Job Status (FAIL)
           when: on_fail
       - run: 
           command: |
             echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> $BASH_ENV
+            echo 'export SLACK_PARAM_MENTIONS=""' >> $BASH_ENV
           name: Slack - Detecting Job Status (PASS)
           when: on_success
       - when:
@@ -99,14 +100,9 @@ commands:
             - run:
                 name: Send Slack Notif - Update
                 command: |
-                  SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
+                  SLACK_PARAM_MENTIONS=$SLACK_PARAM_MENTIONS SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
                   curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
                 when: always
-      - run:
-          name: Reset Slack User
-          command: |
-            echo 'export SLACK_USER=""' >> $BASH_ENV
-          when: always
       - fbz_save_bash_env
 jobs:
   fbz_notify_start_deployment:
