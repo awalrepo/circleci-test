@@ -68,6 +68,12 @@ commands:
           when: on_success
       - when:
           condition:
+            equal: ["on_hold", << parameters.pipeline >>]
+          steps:
+            - run: echo 'export SLACK_USER="@$(echo $CIRCLE_USERNAME)"' >> $BASH_ENV
+
+      - when:
+          condition:
             equal: ["create", << parameters.notif_action >>]
           steps:
             - run:
@@ -80,6 +86,7 @@ commands:
       - when:
           condition:
             equal: ["update", << parameters.notif_action >>]
+            or: ["on_hold", << parameters.notif_action >>]
           steps:
             - run:
                 name: Send Slack Notif - Update
@@ -107,6 +114,16 @@ jobs:
     steps:
       - fbz_load_bash_env
       - checkout
+
+  fbz_notify_on_hold:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - fbz_load_bash_env
+      - checkout
+      - fbz_slack_notif:
+          pipeline: "FBZ_ICON_HOLD"
+          notif_action: "on_hold"
       
   fbz_notify_prod_deployment:
     docker:
@@ -159,10 +176,14 @@ workflows:
             - fbz_slack_notif:
                 pipeline: "FBZ_ICON_UNIT"
                 notif_action: "update"
+      - fbz_notify_on_hold:
+          requires:
+            - fbz_notify_unit_deployment
+          context: slack-secrets
       - hold-deploy-production-pipeline:
           type: approval
           requires:
-            - fbz_notify_unit_deployment
+            - fbz_notify_on_hold
       - fbz_notify_prod_deployment:
           notif_action: "update"
           requires:
