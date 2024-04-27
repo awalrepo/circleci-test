@@ -3,6 +3,9 @@ parameters:
   slack-channel:
     type: string
     default: C06V5CYCK32
+  slack-notif-branch:
+    type: string
+    default: test
 orbs:
   slack: circleci/slack@4.9.3
 commands:
@@ -35,7 +38,7 @@ commands:
     steps:
       - when:
           condition:
-            equal: ["main", << pipeline.git.branch >>]
+            equal: [<< pipeline.parameters.slack-notif-branch >>, << pipeline.git.branch >>]
           steps:
             - run: |
                 mkdir -p ~/pipeline/fbz
@@ -49,7 +52,7 @@ commands:
     steps:
       - when:
           condition:
-            equal: ["main", << pipeline.git.branch >>]
+            equal: [<< pipeline.parameters.slack-notif-branch >> , << pipeline.git.branch >>]
           steps:
             - run: mkdir -p ~/pipeline/fbz
             - attach_workspace:
@@ -73,7 +76,7 @@ commands:
     steps:
       - when:
           condition: 
-            equal: ["main", << pipeline.git.branch >>]
+            equal: [<< pipeline.parameters.slack-notif-branch >>, << pipeline.git.branch >>]
           steps:
             - run: 
                 command: |
