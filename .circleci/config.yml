@@ -227,7 +227,7 @@ workflows:
       - fbz_notif_update_state:
           name: "Update state hold"
           requires:
-            - fbz_notify_unit_deployment
+            - "Update state unit test finish"
           context: slack-secrets
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
