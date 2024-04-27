@@ -55,6 +55,9 @@ commands:
       channel:
         type: string
         default: C06V5CYCK32
+      success_mark:
+        type: string
+        default: ":white_check_mark:"
     steps:
       - run: 
           command: |
@@ -63,7 +66,7 @@ commands:
           when: on_fail
       - run: 
           command: |
-            echo 'export << parameters.pipeline >>=":white_check_mark:"' >> $BASH_ENV
+            echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> $BASH_ENV
           name: Slack - Detecting Job Status (PASS)
           when: on_success
       - when:
@@ -124,6 +127,7 @@ jobs:
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_HOLD"
           notif_action: "on_hold"
+          success_mark: ":double_vertical_bar:"
       
   fbz_notify_prod_deployment:
     docker:
