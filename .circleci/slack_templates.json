@@ -324,6 +324,14 @@
                 "type": "section",
                 "text": {
                     "type": "plain_text",
+                    "text": "${FBZ_ICON_APPROVE:=:white_square_button:} Waiting for approval ($SLACK_USER)",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
                     "text": "${FBZ_ICON_PROD:=:white_square_button:} Changes deployed to production",
                     "emoji": true
                 }
@@ -437,6 +445,14 @@
                 "text": {
                     "type": "plain_text",
                     "text": "${FBZ_ICON_UNIT:=:white_square_button:} Unit / Integration tests passed",
+                    "emoji": true
+                }
+            },
+            {
+                "type": "section",
+                "text": {
+                    "type": "plain_text",
+                    "text": "${FBZ_ICON_APPROVE:=:white_square_button:} Waiting for approval ($SLACK_USER)",
                     "emoji": true
                 }
             },
