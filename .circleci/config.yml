@@ -189,7 +189,7 @@ jobs:
       # - fbz_slack_notif:
       #     pipeline: "FBZ_ICON_SMOKE"
       #     notif_action: "update"
-      - run: echo "fbz_notify_smoke_deployment"
+      - run: exit 1
 
   fbz_notify_visual_deployment:
     docker:
