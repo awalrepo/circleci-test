@@ -130,7 +130,7 @@ commands:
       - gh/install
       - run:
           command: |
-            gh pr list --state merged --base $CIRCLE_BRANCH --json additions,assignees,author,autoMergeRequest,baseRefName,body,changedFiles,closed,closedAt,comments,commits,createdAt,deletions,files,headRefName,headRefOid,headRepository,headRepositoryOwner,id,isCrossRepository,isDraft,labels,latestReviews,maintainerCanModify,mergeCommit,mergeStateStatus,mergeable,mergedAt,mergedBy,milestone,number,potentialMergeCommit,projectCards,projectItems,reactionGroups,reviewDecision,reviewRequests,reviews,state,statusCheckRollup,title,updatedAt,url
+            gh pr list --state merged --base $CIRCLE_BRANCH --json baseRefName,headRefName
 jobs:
   fbz_notify_start_deployment:
     docker:
