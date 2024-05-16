@@ -217,7 +217,9 @@ workflows:
   build-test-and-deploy:
     jobs:
       - fbz_notify_start_deployment:
-          context: slack-secrets
+          context: 
+            - slack-secrets
+            - github-secrets
 
       - fbz_notify_unit_deployment:
           requires:
