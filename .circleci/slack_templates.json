@@ -156,7 +156,7 @@
                             },
                             {
                                 "type": "text",
-                                "text": "$FBZ_PR_BRANCH_NAME to $CIRCLE_BRANCH"
+                                "text": " ${FBZ_PR_BRANCH_NAME} to $CIRCLE_BRANCH"
                             }
                         ]
                     }
@@ -275,7 +275,7 @@
                             },
                             {
                                 "type": "text",
-                                "text": " $CIRCLE_BRANCH"
+                                "text": " ${FBZ_PR_BRANCH_NAME} to $CIRCLE_BRANCH"
                             }
                         ]
                     }
@@ -403,7 +403,7 @@
                             },
                             {
                                 "type": "text",
-                                "text": " $CIRCLE_BRANCH"
+                                "text": " ${FBZ_PR_BRANCH_NAME} to $CIRCLE_BRANCH"
                             }
                         ]
                     }
