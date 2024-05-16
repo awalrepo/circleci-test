@@ -126,7 +126,8 @@ commands:
             - fbz_save_bash_env
   fbz_pr_branch_name:
     steps:
-      - gh/setup
+      - checkout
+      - gh/install
       - run:
           command: |
             gh pr list --state merged --base $CIRCLE_BRANCH
