@@ -131,8 +131,9 @@ commands:
       - run:
           command: |
             GH_CLI_RESPONSE=$(gh pr list --state merged --base $CIRCLE_BRANCH --json headRefName,mergedAt)
+            echo $(echo "$GH_CLI_RESPONSE" | jq 'sort_by(.mergedAt) | reverse | .[0].headRefName')
             eval echo 'export FBZ_PR_BRANCH_NAME=$(echo "$GH_CLI_RESPONSE" | jq "sort_by(.mergedAt) | reverse | .[0].headRefName")' >> $BASH_ENV
-            echo $FBZ_PR_BRANCH_NAME
+            cat $BASH_ENV
 jobs:
   fbz_notify_start_deployment:
     docker:
