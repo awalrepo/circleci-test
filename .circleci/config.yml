@@ -130,7 +130,7 @@ commands:
       - gh/install
       - run:
           command: |
-            gh pr list --state merged --base $CIRCLE_BRANCH --json
+            gh pr list --state merged --base $CIRCLE_BRANCH --json baseRefName
 jobs:
   fbz_notify_start_deployment:
     docker:
