@@ -78,6 +78,7 @@ commands:
             - attach_workspace:
                 at: ~/pipeline
             - run: |
+                cat ~/pipeline/fbz/bash_file.env
                 cat ~/pipeline/fbz/bash_file.env >> $BASH_ENV
                 cat $BASH_ENV
 
