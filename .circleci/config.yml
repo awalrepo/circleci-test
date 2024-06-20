@@ -146,7 +146,7 @@ commands:
                   - run:
                       name: Send Slack Notif - Update
                       command: |
-                        echo $SLACK_MESSAGE_TS
+                        echo $(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
                         SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
                         curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
                       when: always
@@ -169,8 +169,8 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - fbz_notify_template
-      - fbz_create_file_share   
+      - fbz_create_file_share
+      - fbz_notify_template   
       # - fbz_pr_branch_name
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_START"
