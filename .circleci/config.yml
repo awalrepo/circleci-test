@@ -47,7 +47,7 @@ commands:
                   echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
                   echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
 
-  fbz_persist_file:
+  fbz_persist_file_share:
     steps:
       - persist_to_workspace:
           root: ~/pipeline
@@ -63,7 +63,7 @@ commands:
             - run: |
                 mkdir -p ~/pipeline/fbz
                 echo -n "" > ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
-            - fbz_persist_file
+            - fbz_persist_file_share
   # fbz_save_bash_env:
   #   steps:
   #     - when:
@@ -158,7 +158,7 @@ commands:
                         curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
                       when: always
             - run: cat ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
-            - fbz_persist_file
+            - fbz_persist_file_share
                       
   fbz_pr_branch_name:
     steps:
