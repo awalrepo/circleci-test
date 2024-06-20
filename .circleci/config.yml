@@ -164,7 +164,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - fbz_notify_template
-      - fbz_create_file_share   
+      # - fbz_create_file_share   
       - fbz_pr_branch_name
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_START"
