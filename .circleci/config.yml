@@ -39,20 +39,35 @@ commands:
             - checkout
             - run: echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> $BASH_ENV
             - run: echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
-  fbz_save_bash_env:
+
+  fbz_create_file_share:
     steps:
       - when:
           condition:
             equal: [<< pipeline.parameters.slack-notif-branch >>, << pipeline.git.branch >>]
-          steps:
+          steps: 
             - run: |
                 mkdir -p ~/pipeline/fbz
-                cp $BASH_ENV ~/pipeline/fbz/bash_file.env
+                echo -n "" > ~/pipeline/fbz/bash_file.env
                 cat ~/pipeline/fbz/bash_file.env
             - persist_to_workspace:
                 root: ~/pipeline
                 paths: 
                   - fbz/bash_file.env
+  # fbz_save_bash_env:
+  #   steps:
+  #     - when:
+  #         condition:
+  #           equal: [<< pipeline.parameters.slack-notif-branch >>, << pipeline.git.branch >>]
+  #         steps:
+  #           - run: |
+  #               mkdir -p ~/pipeline/fbz
+  #               cp $BASH_ENV ~/pipeline/fbz/bash_file.env
+  #               cat ~/pipeline/fbz/bash_file.env
+  #           - persist_to_workspace:
+  #               root: ~/pipeline
+  #               paths: 
+  #                 - fbz/bash_file.env
   fbz_load_bash_env:
     steps:
       - when:
@@ -86,20 +101,29 @@ commands:
             - run: 
                 command: |
                   echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
+                  echo 'export << parameters.pipeline >>=":x:"' >> ~/pipeline/fbz/bash_file.env
                   echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
+                  echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> ~/pipeline/fbz/bash_file.env
+                  cat ~/pipeline/fbz/bash_file.env
                 name: Slack - Detecting Job Status (FAIL)
                 when: on_fail
             - run: 
                 command: |
                   echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> $BASH_ENV
+                  echo 'export << parameters.pipeline >>="<< parameters.success_mark >>"' >> ~/pipeline/fbz/bash_file.env
                   echo 'export SLACK_PARAM_MENTIONS=" "' >> $BASH_ENV
+                  echo 'export SLACK_PARAM_MENTIONS=" "' >> ~/pipeline/fbz/bash_file.env
+                  cat ~/pipeline/fbz/bash_file.env
                 name: Slack - Detecting Job Status (PASS)
                 when: on_success
             - when:
                 condition:
                   equal: ["on_hold", << parameters.notif_action >>]
                 steps:
-                  - run: echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
+                  - run: 
+                    command: |
+                      echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
+                      echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> ~/pipeline/fbz/bash_file.env
             - when:
                 condition:
                   equal: ["create", << parameters.notif_action >>]
@@ -110,6 +134,7 @@ commands:
                         SLACK_CHANNEL=<< parameters.channel >> SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_CREATE" | jq -c | jq -R))
                         SLACK_SENT_RESPONSE=$(curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.postMessage)
                         eval echo 'export SLACK_MESSAGE_TS=$(echo "$SLACK_SENT_RESPONSE" | jq '.ts')' >> $BASH_ENV
+                        eval echo 'export SLACK_MESSAGE_TS=$(echo "$SLACK_SENT_RESPONSE" | jq '.ts')' >> ~/pipeline/fbz/bash_file.env
                       when: always
             - when:
                 condition:
@@ -123,7 +148,7 @@ commands:
                         SLACK_CHANNEL=<< parameters.channel >> SLACK_MESSAGE_TS=$SLACK_MESSAGE_TS SLACK_MSG_BODY=$(eval echo $(echo "$FBZ_TEMPLATE_UPDATE" | jq -c | jq -R))
                         curl -s -f -X POST -H 'Content-type: application/json' -H "Authorization: Bearer $SLACK_ACCESS_TOKEN" --data "$SLACK_MSG_BODY" https://slack.com/api/chat.update
                       when: always
-            - fbz_save_bash_env
+                      
   fbz_pr_branch_name:
     steps:
       - checkout
@@ -137,7 +162,8 @@ jobs:
   fbz_notify_start_deployment:
     docker:
       - image: cimg/base:stable
-    steps:   
+    steps:
+      - fbz_create_file_share   
       - fbz_notify_template
       - fbz_pr_branch_name
       - fbz_slack_notif:
