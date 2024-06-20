@@ -10,7 +10,6 @@ parameters:
     type: string
     default: bash_file.env
 orbs:
-  slack: circleci/slack@4.9.3
   gh: circleci/github-cli@2.3.0
 commands:
   fbz_notify_start:
