@@ -102,7 +102,7 @@ commands:
           condition: 
             equal: [<< pipeline.parameters.slack-notif-branch >>, << pipeline.git.branch >>]
           steps:
-            - run: sed -i "/<< parameters.pipeline >>/d" ~/pipeline/fbz/bash_file.env
+            - run: sed -i "/SLACK_PARAM_MENTIONS/d" ~/pipeline/fbz/bash_file.env
             - run: 
                 command: |
                   echo 'export << parameters.pipeline >>=":x:"' >> $BASH_ENV
@@ -128,7 +128,6 @@ commands:
                   - run: 
                       command: |
                         echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> $BASH_ENV
-                        sed -i "/SLACK_PARAM_MENTIONS/d" ~/pipeline/fbz/bash_file.env
                         echo 'export SLACK_PARAM_MENTIONS="@$CIRCLE_USERNAME"' >> ~/pipeline/fbz/bash_file.env
             - when:
                 condition:
