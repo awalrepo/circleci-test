@@ -47,9 +47,6 @@ commands:
                   echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
                   echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
-                  echo '==='
-                  echo $SLACK_USERNAME
-                  echo '==='
 
   fbz_persist_file_share:
     steps:
@@ -180,6 +177,7 @@ jobs:
     steps:
       - fbz_create_file_share
       - fbz_notify_template   
+      - run: echo "SLACK_USERNAME="$SLACK_USERNAME
       # - fbz_pr_branch_name
       - fbz_slack_notif:
           pipeline: "FBZ_ICON_START"
