@@ -41,7 +41,7 @@ commands:
             - checkout
             - run: 
                 command: |
-                  eval echo $(jq '.map_github_slack_usernames[] | .$CIRCLE_USERNAME // "test"' ./.circleci/slack_templates.json)
+                  echo $(jq eval echo '.map_github_slack_usernames[] | .$CIRCLE_USERNAME // "test"' ./.circleci/slack_templates.json)
                   echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> $BASH_ENV
                   echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
