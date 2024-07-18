@@ -378,7 +378,7 @@
             }
         ]
     },
-    "map_username_github_slack": {
-        "awalrepo": "awal"
-    }
+    "map_github_slack_usernames": [
+        {"awalrepo": "awal"}
+    ]
 }
