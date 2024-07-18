@@ -41,8 +41,8 @@ commands:
             - checkout
             - run: 
                 command: |
-                  echo 'export SLACK_USERNAME=$(jq .map_username_github_slack | .$CIRCLE_USERNAME // "$CIRCLE_USERNAME" ./.circleci/slack_templates.json)' >> $BASH_ENV
-                  echo 'export SLACK_USERNAME=$(jq .map_username_github_slack | .$CIRCLE_USERNAME // "$CIRCLE_USERNAME" ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
+                  echo 'export SLACK_USERNAME=$(jq .map_username_github_slack | .["$CIRCLE_USERNAME"] // "$CIRCLE_USERNAME" ./.circleci/slack_templates.json)' >> $BASH_ENV
+                  echo 'export SLACK_USERNAME=$(jq .map_username_github_slack | .["$CIRCLE_USERNAME"] // "$CIRCLE_USERNAME" ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> $BASH_ENV
                   echo 'export FBZ_TEMPLATE_CREATE=$(jq .fbz_create ./.circleci/slack_templates.json)' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   echo 'export FBZ_TEMPLATE_UPDATE=$(jq .fbz_update ./.circleci/slack_templates.json)' >> $BASH_ENV
