@@ -377,5 +377,8 @@
                 }
             }
         ]
+    },
+    "map_username_github_slack": {
+        "awalrepo": "awal"
     }
 }
