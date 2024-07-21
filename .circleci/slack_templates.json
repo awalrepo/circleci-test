@@ -378,7 +378,7 @@
             }
         ]
     },
-    "map_github_slack_usernames": [
+    "map_github_slack_ids": [
         {"awalrepo": "<@UCX6D3JG4>"}
     ]
 }
