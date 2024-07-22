@@ -188,7 +188,7 @@ commands:
                   eval echo 'export FBZ_PR_BRANCH_NAME=$FBZ_PR_BRANCH_NAME' >> $BASH_ENV
                   eval echo 'export FBZ_PR_BRANCH_NAME=$FBZ_PR_BRANCH_NAME' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   cat $BASH_ENV
-                env:
+                environment:
                   GH_TOKEN: ${{ github-secrets.THE_TOKEN }}
 
 jobs:
