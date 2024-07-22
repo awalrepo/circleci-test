@@ -62,7 +62,7 @@ commands:
             - checkout
             - run: 
                 command: |
-                  SLACK_ID=$(jq '.map_github_slack_ids[] | .["'$CIRCLE_USERNAME'"] // "@'$CIRCLE_USERNAME'"' ./.circleci/slack_templates.json)
+                  SLACK_ID=$(jq '.map_github_slack_contributors[] | .["'$CIRCLE_USERNAME'"] // "@'$CIRCLE_USERNAME'"' ./.circleci/slack_templates.json)
                   eval echo 'export SLACK_ID=$SLACK_ID' >> $BASH_ENV
                   eval echo 'export SLACK_ID=$SLACK_ID' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
 
