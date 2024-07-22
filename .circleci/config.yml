@@ -181,8 +181,7 @@ commands:
           steps:
             - checkout
             - gh/setup:
-                environtment:
-                  GITHUB_TOKEN: ${{ THE_TOKEN }}
+                token: THE_TOKEN
             - gh/install
             - run:
                 command: |
