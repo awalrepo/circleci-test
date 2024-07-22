@@ -192,7 +192,7 @@ commands:
                   eval echo 'export FBZ_PR_BRANCH_NAME=$FBZ_PR_BRANCH_NAME' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   cat $BASH_ENV
                 environment:
-                  GH_TOKEN: ${{ THE_TOKEN }}
+                  GH_TOKEN: $THE_TOKEN
 
 jobs:
   fbz_notify_start_deployment:
