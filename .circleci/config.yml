@@ -59,6 +59,7 @@ commands:
           condition:
             equal: [<< pipeline.parameters.slack-notif-branch >>, << pipeline.git.branch >>]
           steps:
+            - run: jq --version
             - checkout
             - run: 
                 command: |
