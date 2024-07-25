@@ -378,10 +378,10 @@
             }
         ]
     },
-    "map_github_slack_contributors": [
-        {"awalrepo": "<@UCX6D3JG4>"},
-        {"tono": "<@UCX6D3JG4>"},
-        {"toni": "<@UCX6D3JG4>"},
-        {"toni": "<@UCX6D3JG4>"}
-    ]
+    "map_github_slack_contributors": {
+        "awalrepo": "<@UCX6D3JG4>",
+        "tono": "<@UCX6D3JG4>",
+        "toni": "<@UCX6D3JG4>",
+        "ton3": "<@UCX6D3JG4>"
+    }
 }
