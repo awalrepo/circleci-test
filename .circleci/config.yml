@@ -63,8 +63,9 @@ commands:
             - run: 
                 command: |
                   SLACK_ID=$(jq '.map_github_slack_contributors[] | .["'$CIRCLE_USERNAME'"] // "@'$CIRCLE_USERNAME'"' ./.circleci/slack_templates.json)
-                  eval echo 'export SLACK_ID=$SLACK_ID' >> $BASH_ENV
-                  eval echo 'export SLACK_ID=$SLACK_ID' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
+                  echo 'export SLACK_ID="'$SLACK_ID'"' >> $BASH_ENV
+                  echo 'export SLACK_ID="'$SLACK_ID'"' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
+                  cat $BASH_ENV
 
 
   fbz_create_file_share:
@@ -186,9 +187,9 @@ commands:
             - run:
                 command: |
                   GH_CLI_RESPONSE=$(gh pr list --state merged --base $CIRCLE_BRANCH --json headRefName,mergedAt)
-                  FBZ_PR_BRANCH_NAME=$(echo "$GH_CLI_RESPONSE" | jq 'sort_by(.mergedAt) | reverse | .[99].headRefName // "N/A"')
-                  eval echo 'export FBZ_PR_BRANCH_NAME=$FBZ_PR_BRANCH_NAME' >> $BASH_ENV
-                  eval echo 'export FBZ_PR_BRANCH_NAME=$FBZ_PR_BRANCH_NAME' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
+                  FBZ_PR_BRANCH_NAME=$(echo "$GH_CLI_RESPONSE" | jq 'sort_by(.mergedAt) | reverse | .[99].headRefName // "-"')
+                  echo 'export FBZ_PR_BRANCH_NAME="'$FBZ_PR_BRANCH_NAME'"' >> $BASH_ENV
+                  echo 'export FBZ_PR_BRANCH_NAME="'$FBZ_PR_BRANCH_NAME'"' >> ~/pipeline/fbz/<< pipeline.parameters.fbz-file-share-name >>
                   cat $BASH_ENV
 
 jobs:
